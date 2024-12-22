@@ -10,6 +10,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\SendNotiCron::class,
         Commands\SendBotAdsCron::class,
+        Commands\UpdateSite::class,
         
     ];
     /**

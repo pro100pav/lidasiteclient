@@ -19,8 +19,13 @@
                 </div>
             </div>
         </div>
+        
     </div>
 </div>
+<form action="{{ route('admin.update') }}" method="post">
+    @csrf
+    <button class="btn btn-solid sendpoint" type="submit">Обновить</button>
+</form>
 <div class="row">
     <div class="col-md-12">	
         <div class="row">

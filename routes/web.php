@@ -26,6 +26,7 @@ Route::middleware(['auth','redirect.if'])->group(function () {
 Route::middleware(['auth','admin','redirect.if'])->name('admin.')->prefix('manager')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('index');
     Route::post('/active', [App\Http\Controllers\Admin\AdminController::class, 'active'])->name('active');
+    Route::post('/update', [App\Http\Controllers\Admin\UpdateController::class, 'update'])->name('update');
     Route::prefix('users')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('user.index');
         Route::post('/search', [App\Http\Controllers\Admin\UserController::class, 'search'])->name('user.search');
