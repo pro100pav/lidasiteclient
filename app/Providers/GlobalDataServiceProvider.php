@@ -23,7 +23,7 @@ class GlobalDataServiceProvider extends ServiceProvider
     public function boot(): void
     {
         try {
-            $apiResponse = Http::post('https://lidasite/api/activeKey', ['site' => request()->getSchemeAndHttpHost()]); // Замените URL на ваш API
+            $apiResponse = Http::post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost()]); // Замените URL на ваш API
 
             $data = $apiResponse->json(); // предполагаем, что API возвращает JSON
             View::share('globalData', $data); // Сохраняем данные в шаред-данные

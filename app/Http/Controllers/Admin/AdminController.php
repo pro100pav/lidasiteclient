@@ -26,7 +26,7 @@ class AdminController extends Controller
         $key = $request->key;
         $result = Http::withHeaders([
             "Content-Type" => "application/json",
-        ])->post('https://lidasite/api/activeKey', ['site' => request()->getSchemeAndHttpHost(), 'key'=>$key]);
+        ])->post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost(), 'key'=>$key]);
         $otvet = $result->json();
         return redirect()->route('admin.index')->with($otvet['data']['status'], $otvet['data']['string']);
         

@@ -13,7 +13,7 @@
                             <form method="POST" action="{{ route('auth') }}">
                                 @csrf
                                 <div class="uk-margin">
-                                    <label class="uk-form-label" for="form-stacked-text">Код из чат бота</label>
+                                    <label class="uk-form-label" for="form-stacked-text">Ваш пароль</label>
                                     <div class="uk-form-controls">
                                         <div class="uk-inline uk-width-1-1">
                                             <span class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="icon: user"></span>
@@ -30,9 +30,7 @@
                                 <div class="uk-margin">
                                     <button class="uk-button uk-button-primary uk-button-large uk-width-1-1">Войти</button>
                                 </div>
-                                <div class="uk-text-small uk-text-center">
-                                    Нет аккаунта? <a href="https://t.me/LidaSite_bot?start=2">Создать или восстановить через бота телеграм</a>
-                                </div>
+                                
                             </form>
                         </div>
                     </div>
