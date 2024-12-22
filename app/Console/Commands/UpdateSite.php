@@ -110,6 +110,7 @@ class UpdateSite extends Command
     {
         $user =  env('SYSTEM_USER', 'www-data');
         $git_dir = base_path(); //или другой путь к вашему проекту
+        dd($git_dir);
         $process1 = new Process(['sudo', '-u', $user,  'git', 'config', '--global', '--add', 'safe.directory', $git_dir]);
 
         $process1->run();
