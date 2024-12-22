@@ -108,31 +108,19 @@ class UpdateSite extends Command
 
     private function runPull()
     {
-        $user =  env('SYSTEM_USER', 'www-data');
-        $git_dir = base_path(); //или другой путь к вашему проекту
-        dd($git_dir);
-        $process1 = new Process(['sudo', '-u', $user,  'git', 'config', '--global', '--add', 'safe.directory', $git_dir]);
-
-        $process1->run();
-
-        if (!$process1->isSuccessful()) {
-            \Log::error('Ошибка при добавлении безопасной директории', [
-                'command' => $process1->getCommandLine(),
-                'exit_code' => $process1->getExitCode(),
-                'error_output' => $process1->getErrorOutput()
-            ]);
-        }
-        else {
-                \Log::info('Директория добавлена в список безопасных', [
-                'command' => $process1->getCommandLine()
-            ]);
-        }
 
         $process = new Process(['git', 'pull','origin','master']);
         $this->info("Running 'git pull'");
+
+        $process->run(function($type, $buffer) {
+            $this->pullLog[] = $buffer;
+
+            if($buffer == "Already up to date.\n") {
+                $this->alreadyUpToDate = TRUE;
+            }
+            
+        });
         
-        $process->run();
-        dd($process->getErrorOutput());
         return $process->isSuccessful();
 
     }
