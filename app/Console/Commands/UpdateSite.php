@@ -17,14 +17,16 @@ class UpdateSite extends Command
 
         $process = new Process(['git', 'pull', 'origin', 'master']);
         $process->setWorkingDirectory(base_path()); //  очень важно
-
+        
         try {
             $process->run();
-
+            dd($process);
             if (!$process->isSuccessful()) {
+                
               $this->error("Ошибка при git pull: ". $process->getErrorOutput());
                return false;
             }
+            dd($process);
             $this->info('Git pull успешно выполнен!');
              return true;
         } catch (ProcessFailedException $exception) {
