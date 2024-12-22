@@ -15,7 +15,7 @@
                 </div>
                 <div>
                     <h2 class="text-white invoice-num">{{$countUser}}</h2>
-                    <span class="text-white fs-18">Всего пользователей в системе</span>
+                    <span class="text-white fs-18">Всего пользователей в системе sdfgfsgghf</span>
                 </div>
             </div>
         </div>
