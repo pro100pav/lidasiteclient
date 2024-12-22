@@ -108,9 +108,9 @@ class UpdateSite extends Command
 
     private function runPull()
     {
-
+        $user =  env('SYSTEM_USER', 'www-data');
         $git_dir = base_path(); //или другой путь к вашему проекту
-        $process1 = new Process(['git', 'config', '--global', '--add', 'safe.directory', $git_dir]);
+        $process1 = new Process(['sudo', '-u', $user,  'git', 'config', '--global', '--add', 'safe.directory', $git_dir]);
 
         $process1->run();
 
