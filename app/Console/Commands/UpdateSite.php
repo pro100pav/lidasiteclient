@@ -116,14 +116,14 @@ class UpdateSite extends Command
 
         if (!$process1->isSuccessful()) {
             \Log::error('Ошибка при добавлении безопасной директории', [
-                'command' => $process->getCommandLine(),
-                'exit_code' => $process->getExitCode(),
-                'error_output' => $process->getErrorOutput()
+                'command' => $process1->getCommandLine(),
+                'exit_code' => $process1->getExitCode(),
+                'error_output' => $process1->getErrorOutput()
             ]);
         }
         else {
                 \Log::info('Директория добавлена в список безопасных', [
-                'command' => $process->getCommandLine()
+                'command' => $process1->getCommandLine()
             ]);
         }
 
