@@ -3,6 +3,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Artisan;
 
 class UpdateSite extends Command
 {
@@ -101,11 +102,7 @@ class UpdateSite extends Command
 
         if(!$this->runMigrate()) {
 
-            $this->error("Ошибка миграции:");
-
-            foreach($this->migrateLog as $logLine) {
-                $this->info($logLine);
-            }
+            Artisan::call('migrate:install');
 
             return;
         }
