@@ -30141,3 +30141,14 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 .color-success{
   color: #01C854;
 }
+.attach{
+  border: 2px solid #e5e5e5;
+  border-radius: 5px;
+  padding: 10px;
+}
+.attach span{
+  cursor: pointer;
+}
+.attach span:hover{
+  color: red;
+}

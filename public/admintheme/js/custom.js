@@ -516,7 +516,7 @@ $("body").on("change", "#messageImg", function() {
 });
 
 if($('.videoMessage').length){
-	let browseFile = $('#browseFile');
+	let browseFile = $('#browseFileAny');
 	let resumable = new Resumable({
 		target: '/manager/bottemplates/message/upload/video',
 		query:{_token: $('meta[name="csrf-token"]').attr('content')} ,// CSRF token
@@ -550,8 +550,8 @@ if($('.videoMessage').length){
 	resumable.on('fileSuccess', function (file, response) { // trigger when file upload complete
 		response = JSON.parse(response)
 		$('#videomessage').val(response.path);
-		$('.progress').hide();
-		$('.res').html('Успешно загружено');
+		$('.progress-any').hide();
+		$('.resVideo').html('Успешно загружено');
 	});
 
 	resumable.on('fileError', function (file, response) { // trigger when there is any error
@@ -559,7 +559,7 @@ if($('.videoMessage').length){
 	});
 
 
-	let progress = $('.progress');
+	let progress = $('.progress-any');
 	function showProgress() {
 		progress.find('.progress-bar').css('width', '0%');
 		progress.find('.progress-bar').html('0%');
@@ -576,16 +576,105 @@ if($('.videoMessage').length){
 		progress.hide();
 	}
 }
-window.onload = function() {
-	var messageDiv = document.getElementById('dlab_W_Contacts_Body3');
-	messageDiv.scrollTop = messageDiv.scrollHeight;
-};
+if($('.videoMessage2').length){
+	let browseFile2 = $('#browseFileSquare');
+	let resumable2 = new Resumable({
+		target: '/manager/bottemplates/message/upload/noticevideo',
+		query:{_token: $('meta[name="csrf-token"]').attr('content')} ,// CSRF token
+		fileType: ['mp4'],
+		fileTypeErrorCallback: function(file, errorCount) {
+			alert('Формат файла не поддерживается, загрузите пожалйста видео формата mp4');
+		},
+		maxFiles: 1,
+		maxFileSize: 20 * 1024 * 1024,
+		maxFileSizeErrorCallback:function(file, errorCount) {
+			alert('Максимальный размер файла должен быть не более 20 мб');
+		  },
+		headers: {
+			'Accept' : 'application/json'
+		},
+		testChunks: false,
+		throttleProgressCallbacks: 1,
+	});
+
+	resumable2.assignBrowse(browseFile2[0]);
+
+	resumable2.on('fileAdded', function (file) { // trigger when file picked
+		showProgress();
+		resumable2.upload() // to actually start uploading.
+	});
+
+	resumable2.on('fileProgress', function (file) { // trigger when file progress update
+		updateProgress(Math.floor(file.progress() * 100));
+	});
+
+	resumable2.on('fileSuccess', function (file, response) { // trigger when file upload complete
+		response = JSON.parse(response)
+		$('#videomessagenotice').val(response.path);
+		$('.progress-square').hide();
+		$('.resVideoNotice').html('Успешно загружено');
+	});
+
+	resumable2.on('fileError', function (file, response) { // trigger when there is any error
+		alert('Ошибка при загрузке видео')
+	});
+
+
+	let progress = $('.progress-square');
+	function showProgress() {
+		progress.find('.progress-bar').css('width', '0%');
+		progress.find('.progress-bar').html('0%');
+		progress.find('.progress-bar').removeClass('bg-success');
+		progress.show();
+	}
+
+	function updateProgress(value) {
+		progress.find('.progress-bar').css('width', `${value}%`)
+		progress.find('.progress-bar').html(`${value}%`)
+	}
+
+	function hideProgress() {
+		progress.hide();
+	}
+}
+
     $("body").on("click", ".createbut", function() {
         $('#itemid').val($(this).attr('data-item-id'));
         $('input[name="textbutton"]').val('');
         $('input[name="callback"]').val('');
         $('input[name="editiid"]').val('');
         $('.cre').val('Создать');
+    });
+    $("body").on("click", ".delmesel", function() {
+		var el = $(this)
+        var mediaElement = el.prev('video, img');
+		var mediaSrc = mediaElement.attr('src');
+
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		$.ajax({
+			type: 'POST',
+			url: '/manager/bottemplates/message/delete/file',
+			data: {
+				messageId: $('#mesid').html(),
+				tip: el.attr('data-type-media'),
+				file_url: mediaSrc,
+				
+			},
+			success: function(html) {
+				location.reload();
+
+			},
+			error: function(xhr) {
+				$('.error').html('');
+				$.each(xhr.responseJSON.errors, function(key, value) {
+					$('.error').html(value);
+				});
+			}
+		})
     });
     $("body").on("click", ".editbtn", function() {
         $('#itemid').val($(this).attr('data-item-id'));

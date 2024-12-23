@@ -14,12 +14,13 @@
     <div class="col-12">
         <div class="card card-secondary">
             <div class="card-body">
+                <div class="d-none" id="mesid">{{$message->id}}</div>
                 <div class="col-12">
                     <p class="m-0">%name% - Обращение к собеседнику чата по имени</p>
-                    <p class="m-0">%userreflink% - Реф ссылка пользователя</p>
-                    <p class="m-0">%id% - Id пользователя</p>
+                    {{-- <p class="m-0">%userreflink% - Реф ссылка пользователя</p> --}}
+                    {{-- <p class="m-0">%id% - Id пользователя</p>
                     <p class="m-0">%referuser% - Пригласитель</p>
-                    <p class="m-0">%countine% - Колличество в первой линии</p>
+                    <p class="m-0">%countine% - Колличество в первой линии</p> --}}
                     <p class="m-0">%alluser% - Колиичество пользователей всего в этом боте</p>
 
                 </div>
@@ -28,6 +29,7 @@
                     <input type="hidden" name="messageid" value="{{$message->bot_message_id}}">
                     <input type="hidden" name="photomessage" id="photomessage" value="{{$message->images}}">
                     <input type="hidden" name="videomessage" id="videomessage" value="{{$message->video}}">
+                    <input type="hidden" name="videomessagenotice" id="videomessagenotice" value="{{$message->video_notice}}">
                     <div class="row"> 
                         <div class="col-lg-12">
                             <div class="mb-3">
@@ -43,22 +45,43 @@
                                 <input class="choose-file form-file-input form-control" type="file" name="photo" id="messageImg">
                             </div>
                         </div>
-                        <div class="col-lg-12" id="fun">
-                            <div class="mb-3">
-                                <select class="default-select form-control wide mb-3" name="function" id="selfun">
-                                    <option value="0">Без функции</option>
-                                    <option value="podpiska" @if ($message->function == 'referals') selected @endif>Список кандидатов</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="mb-3">
-                                <div class="form-check custom-checkbox mb-3">
-                                    <input type="checkbox" class="form-check-input" name="fixed" id="fixed" @if ($message->fixed == 1) checked @endif>
-                                    <label class="form-check-label" for="fixed">Cобщение приклеено к картинке (0 нет, 1 да), при условие что в сообщение менее 1000 символов</label>
+                        @if (!$message->video)
+                            <div class="col-lg-12 videoMessage">
+                                <div class="mb-3">
+                                    <p class="resVideo"></p>
+                                    <div id="upload-container">
+                                        <button id="browseFileAny" type="button" class="btn btn-primary formvideo">Выбрать видео</button>
+                                    </div>
+                                    <p>Только mp4 или avi не более 40 мегабайт</p>
+                                </div>
+                                <div class="progress progress-any mt-3" style="height: 25px">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                        style="width: 0%; height: 100%">
+                                        0%</div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
+                        @if (!$message->video_notice)
+                            <div class="col-lg-12 videoMessage2">
+                                <div class="mb-3">
+                                    <p class="resVideoNotice"></p>
+                                    <div id="upload-container">
+                                        <button id="browseFileSquare" type="button" class="btn btn-primary formvideo">Загрузить видео заметку (Кружок)</button>
+                                    </div>
+                                    <p>Не более 20 мб, квадратное, только mp4, кружочек сохраненный из избранного</p>
+                                </div>
+                                <div class="progress progress-square mt-3" style="height: 25px">
+                                    <div class="progress-bar1 progress-bar-striped progress-bar-animated"
+                                        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                        style="width: 0%; height: 100%">
+                                        0%</div>
+                                </div>
+                            </div>
+                        @endif
+                        
+                        
+
                         <div class="col-lg-12">
                             <div class="mb-3 mb-0">
                                 <input type="submit" value="Сохранить" class="submit btn btn-primary" name="submit">
@@ -67,16 +90,30 @@
                     </div>
                 </form>
                 <div class="row">
-                    <div class="col-6">
-                        @if ($message->images)
-                            <img src="{{$message->images}}" class="img-fluid" alt="">
-                        @endif
-                    </div>
-                    <div class="col-6">
-                        @if ($message->video)
-                            <video src="{{ $message->video }}" controls style="width: 100%; "></video>
-                        @endif
-                    </div>
+                    @if ($message->images)
+                        <div class="col-4">
+                            <div class="attach text-center">
+                                <img src="{{$message->images}}" class="img-fluid" alt="">
+                                <span class="delmesel" data-type-media="images">Удалить</span>
+                            </div>
+                        </div>
+                    @endif
+                    @if ($message->video)
+                        <div class="col-4">
+                            <div class="attach">
+                                <video src="{{ $message->video }}" controls style="width: 100%; "></video>
+                                <span class="delmesel" data-type-media="video">Удалить</span>
+                            </div>
+                        </div>
+                    @endif
+                    @if ($message->video_notice)
+                        <div class="col-4">
+                            <div class="attach">
+                                <video src="{{ $message->video_notice }}" controls style="width: 100%; "></video>
+                                <span class="delmesel" data-type-media="video_notice">Удалить</span>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

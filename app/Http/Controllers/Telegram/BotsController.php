@@ -409,71 +409,34 @@ class BotsController extends Controller
                                     'resize_keyboard' => true
                                 ]);
                             }
-                            if($item->fixed == 1){
-                                if($item->images){
-                                    try {
-                                        $response = $telegram->sendPhoto([
-                                            'chat_id' => $chat_id,
-                                            'photo' => \Telegram\Bot\FileUpload\InputFile::create($item->images),
-                                            'caption' => $editmessage,
-                                            'reply_markup' => $reply_markup,
-                                            'parse_mode' => 'MarkDown',
-                                        ]);
-                                    } catch (TelegramResponseException $e) {
-                                        $response = "Заблокирован";
-                                    }
-                                }elseif($item->video){
-                                    try {
-                                        $response = $telegram->sendVideo([
-                                            'chat_id' => $chat_id,
-                                            'video' => \Telegram\Bot\FileUpload\InputFile::create($item->video),
-                                            'caption' => $editmessage,
-                                            'supports_streaming'=> true,
-                                            'reply_markup' => $reply_markup,
-                                            'parse_mode' => 'MarkDown',
-                                        ]);
-                                    } catch (TelegramResponseException $e) {
-                                        $response = "Заблокирован";
-                                    }
-                                }else{
+
+                            if($item->images){
+                                if(mb_strlen($message) > 1000){
                                     try {
                                         $response = $telegram->sendMessage([
                                             'chat_id' => $chat_id,
                                             'text' => $editmessage,
                                             'reply_markup' => $reply_markup,
-                                            'parse_mode' => 'MarkDown',
                                         ]);
-                                        
                                     } catch (TelegramResponseException $e) {
-                                        $response = "Заблокирован";
+                                        Log::emergency($e);
+                                        return;
                                     }
-                                }
-                            }else{
-                                if($item->images){
+                                }else{
                                     try {
                                         $response = $telegram->sendPhoto([
                                             'chat_id' => $chat_id,
                                             'photo' => \Telegram\Bot\FileUpload\InputFile::create($item->images),
+                                            'caption' => $editmessage,
+                                            'reply_markup' => $reply_markup,
+                                            'parse_mode' => 'MarkDown',
                                         ]);
                                     } catch (TelegramResponseException $e) {
-                                        Log::emergency($e);
                                         $response = "Заблокирован";
                                     }
                                 }
-                                if($item->video){
-                                    try {
-                                        $response = $telegram->sendVideo([
-                                            'chat_id' => $chat_id,
-                                            'video' => \Telegram\Bot\FileUpload\InputFile::create($item->video),
-                                            'width' => 1280,
-                                            'height' => 720,
-                                            'supports_streaming'=> true,
-                                        ]);
-                                    } catch (TelegramResponseException $e) {
-                                        Log::emergency($e);
-                                        $response = "Заблокирован";
-                                    }
-                                }
+                                
+                            }else{
                                 if($item->message){
                                     try {
                                         $response = $telegram->sendMessage([
@@ -483,10 +446,36 @@ class BotsController extends Controller
                                         ]);
                                     } catch (TelegramResponseException $e) {
                                         Log::emergency($e);
-                                        $response = "Заблокирован";
+                                        return;
                                     }
                                 }
-                                
+                            }
+
+                            if($item->video){
+                                try {
+                                    $response = $telegram->sendVideo([
+                                        'chat_id' => $chat_id,
+                                        'video' => \Telegram\Bot\FileUpload\InputFile::create($item->video),
+                                        'caption' => $editmessage,
+                                        'supports_streaming'=> true,
+                                        'reply_markup' => $reply_markup,
+                                        'parse_mode' => 'MarkDown',
+                                    ]);
+                                } catch (TelegramResponseException $e) {
+                                    $response = "Заблокирован";
+                                }
+                            }
+                            if($item->video_notice){
+                                try {
+                                    $response = $telegram->sendVideoNote([
+                                        'chat_id' => $chat_id,
+                                        'video' => \Telegram\Bot\FileUpload\InputFile::create($item->video),
+                                    ]);
+                                } catch (TelegramResponseException $e) {
+                                    $response = "Заблокирован";
+                                }
+                            }else{
+                                return;
                             }
                         }
                     }

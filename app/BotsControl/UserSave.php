@@ -124,14 +124,14 @@ class UserSave{
             $profile = new Profile();
             $user->profile()->save($profile);
 
-            $reff = User::find($nastavnik);
+            // $reff = User::find($nastavnik);
             
-            Notice::create([
-                'bot_id' => $bot->id,
-                'user_id' => $nastavnik,
-                'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$username,
-                'send' => 0,
-            ]);
+            // Notice::create([
+            //     'bot_id' => $bot->id,
+            //     'user_id' => $nastavnik,
+            //     'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$username,
+            //     'send' => 0,
+            // ]);
                 
             
             return $user;
@@ -159,13 +159,13 @@ class UserSave{
                     $bt->bot_id = $bot->id;
                     $user->bots()->save($bt);
 
-                    $reff = User::find($nastavnik);
-                    Notice::create([
-                        'bot_id' => $bot->id,
-                        'user_id' => $nastavnik,
-                        'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username,
-                        'send' => 0,
-                    ]);
+                    // $reff = User::find($nastavnik);
+                    // Notice::create([
+                    //     'bot_id' => $bot->id,
+                    //     'user_id' => $nastavnik,
+                    //     'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username,
+                    //     'send' => 0,
+                    // ]);
                 }
             }
             

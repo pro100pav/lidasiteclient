@@ -73,6 +73,8 @@ Route::middleware(['auth','admin','redirect.if'])->name('admin.')->prefix('manag
 
         Route::post('/message/upload/photo', [App\Http\Controllers\Admin\BotConstructController::class, 'uploadPhoto']);
         Route::post('/message/upload/video', [App\Http\Controllers\Admin\BotConstructController::class, 'uploadVideo']);
+        Route::post('/message/upload/noticevideo', [App\Http\Controllers\Admin\BotConstructController::class, 'uploadnoticevideo']);
+        Route::post('/message/delete/file', [App\Http\Controllers\Admin\BotConstructController::class, 'deleteFile']);
     });
     Route::prefix('rassilki')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\RassilkiController::class, 'index'])->name('rassilka.index');
