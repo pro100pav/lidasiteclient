@@ -41,6 +41,13 @@ class UpdateSite extends Command
      */
     private $composerLog = [];
 
+    /**
+     * Log from composer install
+     * 
+     * @var boolean
+     */
+    private $migrateLog = [];
+
 
 
     /**
@@ -92,6 +99,17 @@ class UpdateSite extends Command
             return;
         }
 
+        if(!$this->runMigrate()) {
+
+            $this->error("Ошибка миграции:");
+
+            foreach($this->migrateLog as $logLine) {
+                $this->info($logLine);
+            }
+
+            return;
+        }
+
         $this->info("Succesfully updated the application.");
 
 
@@ -137,6 +155,22 @@ class UpdateSite extends Command
     {
 
         $process = new Process('composer install');
+        $this->info("Running 'composer install'");
+
+        $process->run(function($type, $buffer) {
+            $this->composerLog[] = $buffer;
+        });
+
+
+        return $process->isSuccessful();
+
+
+
+    }
+    private function runMigrate()
+    {
+
+        $process = new Process(['php', 'artisan', 'migrate']);
         $this->info("Running 'composer install'");
 
         $process->run(function($type, $buffer) {
