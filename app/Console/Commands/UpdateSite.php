@@ -89,21 +89,6 @@ class UpdateSite extends Command
         }
 
 
-        if(!$this->runComposer()) {
-
-            $this->error("Error while updating composer files. \nLogs:");
-
-            foreach($this->composerLog as $logLine) {
-                $this->info($logLine);
-            }
-
-            return;
-        }
-
-        
-
-        Artisan::call('migrate:install');
-
             
         
 
@@ -148,62 +133,6 @@ class UpdateSite extends Command
      * @return boolean
      */
 
-    private function runComposer()
-    {
-
-        $process = new Process(['composer', 'install']);
-        $process->setTimeout(300); //Установите таймаут для Composer, чтобы предотвратить зависание.
-        $this->info("Running 'composer install'");
-        try {
-            $process->run();
-            if (!$process->isSuccessful()) {
-                $this->error("Composer install failed:");
-                $this->displayCommandOutput($process); // Подробности о проблеме
-                return false;
-            }
-            $this->info("Composer install successful.");
-            return true;
-        } catch (\Exception $e) {
-            $this->error("Composer install failed (exception): " . $e->getMessage());
-            return false;
-        }
-
-
-        return $process->isSuccessful();
-
-
-
-    }
-    private function runMigrate()
-    {
-
-        $process = new Process(['php', 'artisan', 'migrate']);
-        $process->setTimeout(300); //Установите таймаут для миграций.
-        $this->info("Running 'php artisan migrate'");
-        try {
-            $process->run();
-            if (!$process->isSuccessful()) {
-                $this->error("Migration failed:");
-                $this->displayCommandOutput($process);
-                return false;
-            }
-            $this->info("Migration successful.");
-            return true;
-        } catch (\Exception $e) {
-            $this->error("Migration failed (exception): " . $e->getMessage());
-            return false;
-        }
-
-        
-
-    }
-    protected function displayCommandOutput(Process $process) {
-        foreach ($process->getOutput() as $output) {
-            $this->info($output);
-        }
-        foreach ($process->getErrorOutput() as $errorOutput) {
-            $this->error($errorOutput);
-        }
-    }
+    
 
 }
