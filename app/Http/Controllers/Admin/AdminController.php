@@ -20,7 +20,7 @@ class AdminController extends Controller
 {
     public function index(Request $request){
         $countUser = User::count();
-        Artisan::call('migrate:install');
+        Artisan::call('migrate');
         return view('admin.index', compact('countUser'));
     }
     public function active(Request $request){
