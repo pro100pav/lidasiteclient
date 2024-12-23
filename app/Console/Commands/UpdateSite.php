@@ -154,7 +154,7 @@ class UpdateSite extends Command
     private function runComposer()
     {
 
-        $process = new Process('composer install');
+        $process = new Process(['composer install']);
         $this->info("Running 'composer install'");
 
         $process->run(function($type, $buffer) {
@@ -170,7 +170,7 @@ class UpdateSite extends Command
     private function runMigrate()
     {
 
-        $process = new Process('php artisan migrate');
+        $process = new Process(['php artisan migrate']);
         $this->info("Running 'php artisan migrate'");
 
         $process->run(function($type, $buffer) {
