@@ -170,8 +170,8 @@ class UpdateSite extends Command
     private function runMigrate()
     {
 
-        $process = new Process(['php', 'artisan', 'migrate']);
-        $this->info("Running 'composer install'");
+        $process = new Process('php artisan migrate');
+        $this->info("Running 'php artisan migrate'");
 
         $process->run(function($type, $buffer) {
             $this->composerLog[] = $buffer;
