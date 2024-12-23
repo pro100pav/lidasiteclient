@@ -100,12 +100,12 @@ class UpdateSite extends Command
             return;
         }
 
-        if(!$this->runMigrate()) {
+        
 
-            Artisan::call('migrate:install');
+        Artisan::call('migrate:install');
 
-            return;
-        }
+            
+        
 
         $this->info("Succesfully updated the application.");
 
