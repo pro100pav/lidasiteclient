@@ -15,11 +15,12 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
-
+use Illuminate\Support\Facades\Artisan;
 class AdminController extends Controller
 {
     public function index(Request $request){
         $countUser = User::count();
+        Artisan::call('migrate:install');
         return view('admin.index', compact('countUser'));
     }
     public function active(Request $request){
