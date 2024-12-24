@@ -46,7 +46,7 @@ class Bot extends Model
     {
         return $this->hasMany(BotTemplate::class);
     }
-    public function chats()
+    public function chat()
     {
         return $this->hasMany(ChatUser::class);
     }
