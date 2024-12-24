@@ -77,7 +77,7 @@ class UserController extends Controller
     }
     public function chat(Request $request, $chat){
         $chat = ChatUser::find($chat);
-        $user = $chat->botUs->user;
+        $user = $chat->botUs->userBot->user;
         return view('admin.user.chat', compact('user','chat'));
     }
     
