@@ -21,10 +21,6 @@ class AdminController extends Controller
 {
     public function index(Request $request){
         $countUser = User::count();
-        $bot = Bot::find(1);
-        $user = User::find(1);
-        $usBot = $user->bots->where('bot_id', $bot->id)->first();
-        dd($usBot);
         Artisan::call('migrate');
         return view('admin.index', compact('countUser'));
     }
