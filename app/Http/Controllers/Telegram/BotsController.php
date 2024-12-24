@@ -436,35 +436,37 @@ class BotsController extends Controller
                                         $response = "Заблокирован";
                                     }
                                 }
-                                
-                            }else{
-                                if($item->message){
-                                    try {
-                                        $response = $telegram->sendMessage([
-                                            'chat_id' => $chat_id,
-                                            'text' => $editmessage,
-                                            'reply_markup' => $reply_markup,
-                                        ]);
-                                    } catch (TelegramResponseException $e) {
-                                        Log::emergency($e);
-                                        return;
-                                    }
-                                }
                             }
 
                             if($item->video){
-                                try {
-                                    $response = $telegram->sendVideo([
-                                        'chat_id' => $chat_id,
-                                        'video' => \Telegram\Bot\FileUpload\InputFile::create($item->video),
-                                        'caption' => $editmessage,
-                                        'supports_streaming'=> true,
-                                        'reply_markup' => $reply_markup,
-                                        'parse_mode' => 'MarkDown',
-                                    ]);
-                                } catch (TelegramResponseException $e) {
-                                    $response = "Заблокирован";
+                                if($mesend == 1){
+                                    try {
+                                        $response = $telegram->sendVideo([
+                                            'chat_id' => $chat_id,
+                                            'video' => \Telegram\Bot\FileUpload\InputFile::create($item->video),
+                                            'supports_streaming'=> true,
+                                            'reply_markup' => $reply_markup,
+                                            'parse_mode' => 'MarkDown',
+                                        ]);
+                                    } catch (TelegramResponseException $e) {
+                                        $response = "Заблокирован";
+                                    }
+                                }else{
+                                    try {
+                                        $response = $telegram->sendVideo([
+                                            'chat_id' => $chat_id,
+                                            'video' => \Telegram\Bot\FileUpload\InputFile::create($item->video),
+                                            'caption' => $editmessage,
+                                            'supports_streaming'=> true,
+                                            'reply_markup' => $reply_markup,
+                                            'parse_mode' => 'MarkDown',
+                                        ]);
+                                        $mesend = 1;
+                                    } catch (TelegramResponseException $e) {
+                                        $response = "Заблокирован";
+                                    }
                                 }
+                                
                             }
                             if($item->video_notice){
                                 try {
@@ -477,6 +479,22 @@ class BotsController extends Controller
                                 }
                             }else{
                                 return;
+                            }
+
+                            if($item->message){
+                                if($mesend == 0){
+                                    try {
+                                        $response = $telegram->sendMessage([
+                                            'chat_id' => $chat_id,
+                                            'text' => $editmessage,
+                                            'reply_markup' => $reply_markup,
+                                        ]);
+                                    } catch (TelegramResponseException $e) {
+                                        Log::emergency($e);
+                                        return;
+                                    }
+                                }
+                                
                             }
                         }
                     }
