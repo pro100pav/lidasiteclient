@@ -39,11 +39,8 @@ class BotsController extends Controller
         if ($request->isMethod('post')){
             $bot->name = $request->name;
             $bot->token = $request->token;
-            $bot->type = $request->type;
             $bot->link = $request->link;
-            $bot->price_ads = $request->price_ads;
-            $bot->price_visitka = $request->price_visitka;
-            $bot->price_cepochka = $request->price_cepochka;
+            
             $bot->save();
             return redirect()->route('admin.bots.index');
         }else{
