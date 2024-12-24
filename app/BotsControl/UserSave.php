@@ -76,10 +76,6 @@ class UserSave{
                 if(strlen($result["message"]["text"]) > 20){
                     return 'spam';
                 }
-                $nastavnik = substr($result["message"]["text"], 7);
-                if(!User::find($nastavnik)){
-                    $nastavnik = 1;
-                }
             }
             $username = null;
             $is_username = 1;
@@ -106,13 +102,20 @@ class UserSave{
                 $user->username = $user->id;
                 $user->save();
             }
-            if($nastavnik == 1){
-                $nastavnik = 2;
+            
+            $nastavnik = 1;
+            
+            if($user->id == 1){
+                $partner = new ClassicPartner();
+                $partner->bot_id = $bot->id;
+                $partner->refer_id = null;
+                $user->partner()->save($partner);
+            }else{
+                $partner = new ClassicPartner();
+                $partner->bot_id = $bot->id;
+                $partner->refer_id = $nastavnik;
+                $user->partner()->save($partner);
             }
-            $partner = new ClassicPartner();
-            $partner->bot_id = $bot->id;
-            $partner->refer_id = $nastavnik;
-            $user->partner()->save($partner);
 
             $bt = new UserBot();
             $bt->bot_id = $bot->id;
@@ -142,18 +145,23 @@ class UserSave{
                     if(strlen($result["message"]["text"]) > 20){
                         return 'spam';
                     }
-                    $nastavnik = substr($result["message"]["text"], 7);
-                }
-                $usNast = UserBot::where([['user_id', $nastavnik],['bot_id', $bot->id]])->first();
-                if($usNast){
                     $nastavnik = 1;
                 }
+                $nastavnik = 1;
                 $partnerka = ClassicPartner::where([['bot_id', $bot->id],['user_id',$user->id]])->first();
                 if(!$partnerka){
-                    $partner = new ClassicPartner();
-                    $partner->bot_id = $bot->id;
-                    $partner->refer_id = $nastavnik;
-                    $user->partner()->save($partner);
+                    if($user->id == 1){
+                        $partner = new ClassicPartner();
+                        $partner->bot_id = $bot->id;
+                        $partner->refer_id = null;
+                        $user->partner()->save($partner);
+                    }else{
+                        $partner = new ClassicPartner();
+                        $partner->bot_id = $bot->id;
+                        $partner->refer_id = $nastavnik;
+                        $user->partner()->save($partner);
+                    }
+                    
                     
                     $bt = new UserBot();
                     $bt->bot_id = $bot->id;
