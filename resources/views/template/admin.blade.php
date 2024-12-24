@@ -49,7 +49,7 @@
         <div class="footer">
 		
             <div class="copyright">
-                Создано на <a href="https://t.me/LidaSite_bot?start=2" target="_blank" rel="noopener noreferrer">lidasite</a>
+                <p>Создано на <a href="https://t.me/LidaSite_bot?start=2" target="_blank" rel="noopener noreferrer">lidasite</a></p>
             </div>
         </div>
 
