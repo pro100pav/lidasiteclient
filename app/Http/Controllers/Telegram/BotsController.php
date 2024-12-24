@@ -276,7 +276,7 @@ class BotsController extends Controller
 
     function chatMenegment($telegram, $user, $res, $chat_id, $message, $temp, $bot, $trigger = null){
         $usBot = $user->bots->where('bot_id', $bot)->first();
-        if($usBot->chat){
+        if($usBot->chats){
             $mc = new ChatUserMessage();
             $mc->message_user = $message;
             $usBot->chat->messages()->save($mc);
