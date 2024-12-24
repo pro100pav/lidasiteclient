@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\View;
-
+use Carbon\Carbon;
 class RedirectIfConditionMet
 {
     /**
@@ -16,9 +16,10 @@ class RedirectIfConditionMet
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(View::getShared('globalData')['globalData']['status'] == false){
+        $targetDate = Carbon::parse(View::getShared('globalData')['globalData']->active_at); // Дата, которую нужно проверить
+        if ($targetDate->isPast()) {
             return redirect()->route('activated');
-        };
+        }
 
         return $next($request);
     }

@@ -12,5 +12,6 @@ class AppActive extends Model
         'key',
         'indefinitely',
         'active_at',
+        'bot',
     ];
 }

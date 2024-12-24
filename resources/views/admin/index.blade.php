@@ -32,13 +32,13 @@
                         <div class="mb-3 me-3">
                             <h5 class="fs-20 text-black font-w500">Ваша лицензия</h5>
                             <span class="text-num text-black fs-36 font-w500">
-                                @if (!$globalData['data']['key'])
+                                @if (!$globalData->key)
                                     Демо
                                 @else
-                                    @if ($globalData['data']['indefinitely'] == 1)
+                                    @if ($globalData->indefinitely == 1)
                                     Бессрочная
                                     @else
-                                    Активированая до {{ Carbon\Carbon::parse($globalData['data']['active_at'])->format('d.m.Y') }}
+                                    Активированая до {{ Carbon\Carbon::parse($globalData->active_at)->format('d.m.Y') }}
                                     @endif
                                 @endif
                             </span>
@@ -49,7 +49,7 @@
         </div>
     </div>
 </div>
-@if (!$globalData['data']['key'])
+@if (!$globalData->key)
 <div class="row">
     <div class="col-md-6">
         <div class="card card-primary">

@@ -19,7 +19,9 @@ class BotsController extends Controller
 
     
     public function create(Request $request){
-        
+        if(View::getShared('globalData')['globalData']->bot <= Bot::count()){
+            return redirect()->route('admin.bots.index');
+        }
         if ($request->isMethod('post')){
             Bot::create([
                 'name' => $request->name,

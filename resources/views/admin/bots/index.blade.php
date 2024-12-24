@@ -4,13 +4,15 @@
 @section('content')
 <div class="row">
     <div class="col-12">
+        @if ($globalData->bot > $bots->count())
         <a href="{{route('admin.bots.create')}}" class="btn btn-success">Создать нового бота</a>
+        @endif
     </div>
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Ваши боты</h4>
-                <p>Доступно всего: {{$globalData['data']['bot_count']}}</p>
+                <p>Доступно всего: {{$globalData->bot}}</p>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
