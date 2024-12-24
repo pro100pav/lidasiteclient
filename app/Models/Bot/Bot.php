@@ -8,6 +8,7 @@ use App\Models\Bot\UserBot;
 use App\Models\Bot\BotStep;
 use App\Models\Bot\BotTemplate;
 use App\Models\Bot\SocialGroup;
+use App\Models\Bot\ChatUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,6 +45,10 @@ class Bot extends Model
     public function template()
     {
         return $this->hasMany(BotTemplate::class);
+    }
+    public function chats()
+    {
+        return $this->hasMany(ChatUser::class);
     }
     public function posts()
     {
