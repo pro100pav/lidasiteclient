@@ -477,10 +477,7 @@ class BotsController extends Controller
                                 } catch (TelegramResponseException $e) {
                                     $response = "Заблокирован";
                                 }
-                            }else{
-                                return;
                             }
-
                             if($item->message){
                                 if($mesend == 0){
                                     try {
@@ -495,7 +492,11 @@ class BotsController extends Controller
                                     }
                                 }
                                 
+                            }else{
+                                return;
                             }
+
+                            
                         }
                     }
                 }else{
