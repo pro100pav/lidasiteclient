@@ -408,7 +408,7 @@ class BotsController extends Controller
                                     'resize_keyboard' => true
                                 ]);
                             }
-
+                            Log::info(json_encode($item, JSON_UNESCAPED_UNICODE));
                             if($item->images){
                                 if(mb_strlen($message) > 1000){
                                     try {
@@ -464,6 +464,7 @@ class BotsController extends Controller
                                     $response = "Заблокирован";
                                 }
                             }
+                            Log::info(json_encode($item->video_notice, JSON_UNESCAPED_UNICODE));
                             if($item->video_notice){
                                 try {
                                     $response = $telegram->sendVideoNote([
