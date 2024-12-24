@@ -4,9 +4,7 @@
 @section('content')
 <div class="row">
     <div class="col-12">
-        @if ($globalData['data']['bot_count'] < $bots->count())
-            <a href="{{route('admin.bots.create')}}" class="btn btn-success">Создать нового бота</a>
-        @endif
+        <a href="{{route('admin.bots.create')}}" class="btn btn-success">Создать нового бота</a>
     </div>
     <div class="col-md-12">
         <div class="card">
