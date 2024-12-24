@@ -6,7 +6,8 @@
                     <i class="flaticon-025-dashboard"></i>
                     <span class="nav-text">Пользователи</span>
                 </a>
-            </li>
+            </li>             
+            
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                 <i class="flaticon-050-info"></i>
                     <span class="nav-text">Чат боты</span>
@@ -17,6 +18,15 @@
                     <li><a href="{{route('admin.groups.index')}}">Группы</a></li>
                     <li><a href="{{route('admin.rassilka.index')}}">Рассылка</a></li>
                 </ul>
+            </li>
+            <li>
+                <a class="has-arrow ai-icon" href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();" aria-expanded="false">
+                    <i class="flaticon-025-dashboard"></i>
+                    <span class="nav-text">Выход</span>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </li>
         </ul>
     </div>
