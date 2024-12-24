@@ -20,7 +20,7 @@ class ChatUser extends Model
 
     public function botUs()
     {
-      return $this->belongsTo(Bot::class, 'user_bot_id');
+      return $this->belongsTo(UserBot::class, 'user_bot_id');
     }
 
     public function messages()

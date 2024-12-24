@@ -14,6 +14,7 @@ use App\Models\UserKeyOfUser;
 use App\Models\Pool;
 use App\Models\UserPool;
 use App\Models\ClassicPartner;
+use App\Models\Bot\Bot;
 use App\Models\Bot\BotUser;
 use App\Models\Bot\ChatUser;
 use App\Models\Bot\ChatUserMessage;
@@ -77,7 +78,7 @@ class UserController extends Controller
     }
     public function chat(Request $request, $chat){
         $chat = ChatUser::find($chat);
-        $user = $chat->botUs->userBot->user;
+        $user = $chat->botUs->user;
         return view('admin.user.chat', compact('user','chat'));
     }
     
