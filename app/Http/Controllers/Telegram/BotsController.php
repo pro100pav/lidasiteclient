@@ -408,15 +408,16 @@ class BotsController extends Controller
                                     'resize_keyboard' => true
                                 ]);
                             }
-                            Log::info(json_encode($item, JSON_UNESCAPED_UNICODE));
+                            $mesend = 0;
                             if($item->images){
-                                if(mb_strlen($message) > 1000){
+                                if(mb_strlen($editmessage) > 1000){
                                     try {
                                         $response = $telegram->sendMessage([
                                             'chat_id' => $chat_id,
                                             'text' => $editmessage,
                                             'reply_markup' => $reply_markup,
                                         ]);
+                                        $mesend = 1;
                                     } catch (TelegramResponseException $e) {
                                         Log::emergency($e);
                                         return;
@@ -430,6 +431,7 @@ class BotsController extends Controller
                                             'reply_markup' => $reply_markup,
                                             'parse_mode' => 'MarkDown',
                                         ]);
+                                        $mesend = 1;
                                     } catch (TelegramResponseException $e) {
                                         $response = "Заблокирован";
                                     }
@@ -464,7 +466,6 @@ class BotsController extends Controller
                                     $response = "Заблокирован";
                                 }
                             }
-                            Log::info(json_encode($item->video_notice, JSON_UNESCAPED_UNICODE));
                             if($item->video_notice){
                                 try {
                                     $response = $telegram->sendVideoNote([
