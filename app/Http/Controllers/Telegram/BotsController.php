@@ -469,7 +469,7 @@ class BotsController extends Controller
                                 try {
                                     $response = $telegram->sendVideoNote([
                                         'chat_id' => $chat_id,
-                                        'video' => \Telegram\Bot\FileUpload\InputFile::create($item->video_notice),
+                                        'video_note' => \Telegram\Bot\FileUpload\InputFile::create($item->video_notice),
                                     ]);
                                 } catch (TelegramResponseException $e) {
                                     $response = "Заблокирован";
