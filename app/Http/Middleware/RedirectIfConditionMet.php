@@ -16,10 +16,13 @@ class RedirectIfConditionMet
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $targetDate = Carbon::parse(View::getShared('globalData')['globalData']->active_at); // Дата, которую нужно проверить
-        if ($targetDate->isPast()) {
-            return redirect()->route('activated');
+        if(View::getShared('globalData')['globalData']->indefinitely == 0){
+            $targetDate = Carbon::parse(View::getShared('globalData')['globalData']->active_at); // Дата, которую нужно проверить
+            if ($targetDate->isPast()) {
+                return redirect()->route('activated');
+            }
         }
+        
 
         return $next($request);
     }
