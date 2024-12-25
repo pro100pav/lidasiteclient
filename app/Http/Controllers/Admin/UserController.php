@@ -15,10 +15,10 @@ use App\Models\Pool;
 use App\Models\UserPool;
 use App\Models\ClassicPartner;
 use App\Models\Bot\Bot;
-use App\Models\Bot\BotUser;
 use App\Models\Bot\ChatUser;
 use App\Models\Bot\ChatUserMessage;
 use App\Models\Bot\Notice;
+use App\Models\Bot\UserBot;
 use App\Customs\Bot\BotCustomMethod;
 use App\Customs\Referals;
 use App\Http\Controllers\Controller;
@@ -238,17 +238,17 @@ class UserController extends Controller
         
     }
     public function sendMessage(Request $request, $id){
-        $userTeleg = BotUser::where('user_id',$id)->first();
+        $userTeleg = UserBot::where('user_id',$id)->first();
         $param = [
                 'chat_id' => $userTeleg->id_telegram,
                 'text' => $request->comment,
                 'parse_mode' => 'MarkDown',
             ];
-        $res = BotCustomMethod::index('sendMessage', $param, $userTeleg->bot_id);
+        $res = BotCustomMethod::index('sendMessage', $param, $userTeleg->bot->token);
         return redirect()->back()->with('success', 'Сообщение отправлено');
     }
     public function chatSend(Request $request, $id, $chat){
-        $userTeleg = where('user_id',$id)->first();
+        $userTeleg = UserBot::where('user_id',$id)->first();
         $chat = ChatUser::find($chat);
         if($chat->close == 1){
             return redirect()->back()->with('danger', 'Диалог закрыт');
