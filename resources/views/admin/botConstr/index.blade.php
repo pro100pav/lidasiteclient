@@ -88,8 +88,8 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="mb-3">
-                                <select class="default-select form-control wide mb-3" name="bot">
-                                    <option value="0">-----</option>
+                                <label class="text-black font-w600 form-label">К какому чат боту будет првязан</label>
+                                <select class="default-select form-control wide mb-3" name="bot" required>
                                     @foreach ($bots as $bot)
                                         <option value="{{$bot->id}}">{{$bot->name}}</option>
                                     @endforeach
