@@ -32,6 +32,9 @@ class AdminController extends Controller
         $otvet = $result->json();
         if($otvet['data']['string'] == 'Ключ активирован'){
             $apps = AppActive::find(1);
+            if($otvet['data']['time'] == 1){
+                $apps->indefinitely = 1;
+            }
             $apps->key = $key;
             $apps->save();
         }
