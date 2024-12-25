@@ -15,7 +15,6 @@
                             <tr>
                                 <th style="width:80px;"><strong>id</strong></th>
                                 <th><strong>По какому боту</strong></th>
-                                <th><strong>Инициатор рассылки</strong></th>
                                 <th><strong>Текст</strong></th>
                                 <th><strong>Статус</strong></th>
                                 <th><strong>Дата создания</strong></th>
@@ -28,7 +27,6 @@
                              @foreach ($posts as $post)
                                 <tr>
                                     <td><strong>{{$post->id}}</strong></td>
-                                    <td>{{ $post->user->name }}</td>
                                     <td>
                                         {{ \Illuminate\Support\Str::limit($post->content, 50, $end='...') }}
                                     </td>
