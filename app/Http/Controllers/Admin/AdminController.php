@@ -28,8 +28,13 @@ class AdminController extends Controller
         $key = $request->key;
         $result = Http::withHeaders([
             "Content-Type" => "application/json",
-        ])->post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost(), 'key'=>$key]);
+        ])->post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost(), 'keyActive'=>$key]);
         $otvet = $result->json();
+        if($otvet['data']['string'] == 'Ключ активирован'){
+            $apps = AppActive::find(1);
+            $apps->key = $key;
+            $apps->save();
+        }
         return redirect()->route('admin.index')->with($otvet['data']['status'], $otvet['data']['string']);
         
     }

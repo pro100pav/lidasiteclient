@@ -33,7 +33,7 @@
                             <h5 class="fs-20 text-black font-w500">Ваша лицензия</h5>
                             <span class="text-num text-black fs-36 font-w500">
                                 @if (!$globalData->key)
-                                    Демо
+                                    "Демо" Доступна до {{ Carbon\Carbon::parse($globalData->active_at)->format('d.m.Y') }}
                                 @else
                                     @if ($globalData->indefinitely == 1)
                                     Бессрочная
