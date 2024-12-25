@@ -38,10 +38,9 @@ class RassilkiController extends Controller
         }
         AddsPost::create([
             'bot_id' => $request->bot,
-            'message' => $request->messageras,
-            'images' => $request->photomessage,
-            'video' => $request->videomessage,
-            'buttons' => $request->button,
+            'content' => $request->messageras,
+            'attachment' => $request->photomessage,
+            'button' => $request->button,
             'send' => 0,
             'status' => 2,
         ]);
