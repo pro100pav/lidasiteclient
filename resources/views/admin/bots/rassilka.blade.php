@@ -26,6 +26,8 @@
                              @foreach ($posts as $post)
                                 <tr>
                                     <td><strong>{{$post->id}}</strong></td>
+                                    <td><strong>{{$post->boting->name}}</strong></td>
+                                    <td><strong>{{$post->content}}</strong></td>
                                     <td>
                                         {{ \Illuminate\Support\Str::limit($post->content, 50, $end='...') }}
                                     </td>
