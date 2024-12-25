@@ -20,7 +20,6 @@
                                 <th><strong>Дата создания</strong></th>
                                 <th><strong>Дата запуска</strong></th>
                                 <th><strong>Дата завершения</strong></th>
-                                <th><strong>Действие</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,10 +46,10 @@
                                     <td  scope="row">{{ Carbon\Carbon::parse($post->created_at)->format('d.m.Y H:i:s') }}</td>
                                     <td  scope="row">{{ Carbon\Carbon::parse($post->sendstart_at)->format('d.m.Y H:i:s') }}</td>
                                     <td  scope="row">{{ Carbon\Carbon::parse($post->updated_at)->format('d.m.Y H:i:s') }}</td>
-                                    <td  scope="row">
+                                    {{-- <td  scope="row">
                                         <a href="{{route('admin.rassilka.proverka',$post->id)}}" class="btn btn-primary">Отправить себе для проверки</a>
                                         <a href="{{route('admin.rassilka.startRas',$post->id)}}" class="btn btn-primary">Перезапустить</a>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach 
                         </tbody>
