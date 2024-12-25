@@ -22,7 +22,7 @@
             <li>
                 <a class="has-arrow ai-icon" href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();" aria-expanded="false">
                     <i class="flaticon-025-dashboard"></i>
-                    <span class="nav-text">Выход из системы</span>
+                    <span class="nav-text">Выход</span>
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
