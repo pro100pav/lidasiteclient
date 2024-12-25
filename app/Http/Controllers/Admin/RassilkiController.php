@@ -47,6 +47,7 @@ class RassilkiController extends Controller
         return redirect()->back();
     }
     public function startRas(Request $request, $id){
+        
         $post = AddsPost::find($id);
         $post->status = 4;
         $post->save();

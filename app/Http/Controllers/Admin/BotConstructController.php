@@ -296,7 +296,7 @@ class BotConstructController extends Controller
 
         $filename = $this->compress_image($_FILES["file"]["tmp_name"], $upload_url, 40);
 
-        $img1 = Storage::url($storagePath);
+        $img1 = request()->getSchemeAndHttpHost().Storage::url($storagePath);
 
         return response()->json(['status' => 'ok','location' => $img1]);
     }
