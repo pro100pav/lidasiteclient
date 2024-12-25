@@ -38,7 +38,7 @@
                                                 @endif
                                             @endforeach
                                         </div>
-                                        <div class="type_msg">
+                                        {{-- <div class="type_msg">
                                             <form action="{{route('admin.user.chatSend',['id' => $user->id,'chat'=> $chat->id])}}" method="post">
                                                 @csrf
                                                 <div class="input-group">
@@ -48,7 +48,7 @@
                                                     </div>
                                                 </div>
                                             </form>
-                                        </div>
+                                        </div> --}}
                                     </div>
                             </div>
                         </div>

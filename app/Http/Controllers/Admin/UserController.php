@@ -238,17 +238,17 @@ class UserController extends Controller
         
     }
     public function sendMessage(Request $request, $id){
-        $userTeleg = BotUser::find($id);
+        $userTeleg = BotUser::where('user_id',$id)->first();
         $param = [
                 'chat_id' => $userTeleg->id_telegram,
                 'text' => $request->comment,
                 'parse_mode' => 'MarkDown',
             ];
-        $res = BotCustomMethod::index('sendMessage', $param, $userTeleg->bot->token);
+        $res = BotCustomMethod::index('sendMessage', $param, $userTeleg->bot_id);
         return redirect()->back()->with('success', 'Сообщение отправлено');
     }
     public function chatSend(Request $request, $id, $chat){
-        $userTeleg = BotUser::find($id);
+        $userTeleg = where('user_id',$id)->first();
         $chat = ChatUser::find($chat);
         if($chat->close == 1){
             return redirect()->back()->with('danger', 'Диалог закрыт');
