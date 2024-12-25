@@ -240,7 +240,7 @@ class UserController extends Controller
     public function sendMessage(Request $request, $id){
         $userTeleg = UserBot::where('user_id',$id)->first();
         $param = [
-                'chat_id' => $userTeleg->id_telegram,
+                'chat_id' => $userTeleg->user->id_telegram,
                 'text' => $request->comment,
                 'parse_mode' => 'MarkDown',
             ];
