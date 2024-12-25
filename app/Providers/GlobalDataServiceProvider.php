@@ -31,6 +31,8 @@ class GlobalDataServiceProvider extends ServiceProvider
                 try {
                     $apiResponse = Http::post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost()]); // Замените URL на ваш API
                     $data = $apiResponse->json(); // предполагаем, что API возвращает JSON
+                    dd($appa);
+                    $appa->key = $data['data']['key'];
                     $appa->indefinitely = $data['data']['indefinitely'];
                     $appa->active_at = $data['data']['active_at'];
                     $appa->bot = $data['data']['bot_count'];
@@ -49,7 +51,9 @@ class GlobalDataServiceProvider extends ServiceProvider
             try {
                 $apiResponse = Http::post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost()]); // Замените URL на ваш API
                 $data = $apiResponse->json(); // предполагаем, что API возвращает JSON
+                dd($appa);
                 $appa = AppActive::create([
+                    'key' => $data['data']['key'],
                     'indefinitely' => $data['data']['indefinitely'],
                     'active_at' => $data['data']['active_at'],
                     'bot' => $data['data']['bot_count'],
