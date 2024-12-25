@@ -12,6 +12,7 @@ use Telegram\Bot\Exceptions\TelegramResponseException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use DateTime;
 
 class SendBotAdsCron extends Command
@@ -89,16 +90,18 @@ class SendBotAdsCron extends Command
                             $params['text'] = $post->content;
                         }
                         try {
-                            $telegram->$method($params);
+                            $rest= $telegram->$method($params);
                             $countResult++;
                             if($countResult % 100 == 0){
                                 $chunk = $notify->take($countResult);
                                 $chunk->update(["sending" => 1]);
                                 $count = 0;
                             }
+                            Log::info(json_encode($rest, JSON_UNESCAPED_UNICODE));
                         } catch (TelegramResponseException $e) {
                             $item->status = 1;
                             $item->save();
+                            Log::info(json_encode($e, JSON_UNESCAPED_UNICODE));
                         }
                         if ($countResult % 1000 == 0) {
                             sleep(10); // Задержка на 10 секунд
