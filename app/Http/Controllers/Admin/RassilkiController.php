@@ -43,7 +43,7 @@ class RassilkiController extends Controller
             'video' => $request->videomessage,
             'buttons' => $request->button,
             'send' => 0,
-            'status' => 4,
+            'status' => 2,
         ]);
         return redirect()->back();
     }
