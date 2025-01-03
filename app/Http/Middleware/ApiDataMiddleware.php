@@ -16,17 +16,17 @@ class ApiDataMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        try {
-            $key = 132144;
-            $result = Http::withHeaders([
-                "Content-Type" => "application/json",
-            ])->post('https://lidasite.ru/api/activeKey', ['key'=>$key]);
-            $apiData = $result->json();
-            dd($apiData);
+        // try {
+        //     $key = 132144;
+        //     $result = Http::withHeaders([
+        //         "Content-Type" => "application/json",
+        //     ])->post('https://lidasite.ru/api/activeKey', ['key'=>$key]);
+        //     $apiData = $result->json();
+        //     dd($apiData);
             
-        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
-            dd($e);
-        }
+        // } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+        //     dd($e);
+        // }
         
 
         return $next($request);
