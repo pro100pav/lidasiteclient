@@ -14,6 +14,7 @@ use Carbon\Carbon;
 class FrontController extends Controller
 {
     public function index(Request $request){
+        
         return redirect()->route('login');
     }
     
