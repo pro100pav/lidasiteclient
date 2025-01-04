@@ -33,7 +33,6 @@ class GlobalDataServiceProvider extends ServiceProvider
                 if (Schema::hasTable('app_actives')) {
                     $appa = AppActive::find(1);
                     if($appa){
-                        
                         if ($appa->updated_at->diffInHours(Carbon::now()) >= 1) {
                             try {
                                 $apiResponse = Http::post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost(), 'key' => $appa->key]); // Замените URL на ваш API
@@ -53,7 +52,6 @@ class GlobalDataServiceProvider extends ServiceProvider
                             View::share('globalData', $appa);
                         }
                     }else{
-                        
                         try {
                             $apiResponse = Http::post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost()]); // Замените URL на ваш API
                             $data = $apiResponse->json(); // предполагаем, что API возвращает JSON
