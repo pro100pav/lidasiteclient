@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 use PDOException;
 
@@ -29,44 +30,47 @@ class GlobalDataServiceProvider extends ServiceProvider
     {
         App::booted(function (){ 
             if ($this->databaseConnectionAvailable()) {
-                $appa = AppActive::find(1);
-                if($appa){
-                    
-                    if ($appa->updated_at->diffInHours(Carbon::now()) >= 1) {
+                if (Schema::hasTable('app_actives')) {
+                    $appa = AppActive::find(1);
+                    if($appa){
+                        
+                        if ($appa->updated_at->diffInHours(Carbon::now()) >= 1) {
+                            try {
+                                $apiResponse = Http::post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost(), 'key' => $appa->key]); // Замените URL на ваш API
+                                $data = $apiResponse->json(); // предполагаем, что API возвращает JSON
+            
+                                $appa->indefinitely = $data['data']['indefinitely'];
+                                $appa->active_at = $data['data']['active_at'];
+                                $appa->bot = $data['data']['bot_count'];
+                                $appa->save();
+                                View::share('globalData', $appa); // Сохраняем данные в шаред-данные
+                            } catch (\Exception $e) {
+                                 // Обработка ошибки, например, логирование
+                                \Log::error("Error fetching API data: " . $e->getMessage());
+                                View::share('globalData', []); // Устанавливаем пустой массив, чтобы не было ошибок
+                            }
+                        }else{
+                            View::share('globalData', $appa);
+                        }
+                    }else{
+                        
                         try {
-                            $apiResponse = Http::post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost(), 'key' => $appa->key]); // Замените URL на ваш API
+                            $apiResponse = Http::post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost()]); // Замените URL на ваш API
                             $data = $apiResponse->json(); // предполагаем, что API возвращает JSON
-        
-                            $appa->indefinitely = $data['data']['indefinitely'];
-                            $appa->active_at = $data['data']['active_at'];
-                            $appa->bot = $data['data']['bot_count'];
-                            $appa->save();
+                            $appa = AppActive::create([
+                                'indefinitely' => $data['data']['indefinitely'],
+                                'active_at' => $data['data']['active_at'],
+                                'bot' => $data['data']['bot_count'],
+                                ]);
                             View::share('globalData', $appa); // Сохраняем данные в шаред-данные
                         } catch (\Exception $e) {
                              // Обработка ошибки, например, логирование
                             \Log::error("Error fetching API data: " . $e->getMessage());
                             View::share('globalData', []); // Устанавливаем пустой массив, чтобы не было ошибок
                         }
-                    }else{
-                        View::share('globalData', $appa);
-                    }
-                }else{
-                    
-                    try {
-                        $apiResponse = Http::post('https://lidasite.ru/api/activeKey', ['site' => request()->getSchemeAndHttpHost()]); // Замените URL на ваш API
-                        $data = $apiResponse->json(); // предполагаем, что API возвращает JSON
-                        $appa = AppActive::create([
-                            'indefinitely' => $data['data']['indefinitely'],
-                            'active_at' => $data['data']['active_at'],
-                            'bot' => $data['data']['bot_count'],
-                            ]);
-                        View::share('globalData', $appa); // Сохраняем данные в шаред-данные
-                    } catch (\Exception $e) {
-                         // Обработка ошибки, например, логирование
-                        \Log::error("Error fetching API data: " . $e->getMessage());
-                        View::share('globalData', []); // Устанавливаем пустой массив, чтобы не было ошибок
                     }
                 }
+                
             }
             
         });
