@@ -93,7 +93,7 @@ class BotsController extends Controller
                                                 [
                                                     [
                                                         'text' => 'Проверить',
-                                                        'callback_data' => $user->last_message,
+                                                        'callback_data' => $user->bots->where('bot_id', $bot->id)->first()->last_message,
                                                     ]
                                                 ],
                                             ],
@@ -165,7 +165,7 @@ class BotsController extends Controller
                                             [
                                                 [
                                                     'text' => 'Проверить',
-                                                    'callback_data' => $user->last_message,
+                                                    'callback_data' => $user->bots->where('bot_id', $bot->id)->first()->last_message,
                                                 ]
                                             ],
                                         ],
@@ -505,7 +505,7 @@ class BotsController extends Controller
                             [
                                 [
                                     'text' => 'Проверить',
-                                    'callback_data' => $user->last_message,
+                                    'callback_data' => $user->bots->where('bot_id', $bot->id)->first()->last_message,
                                 ]
                             ],
                         ],
