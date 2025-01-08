@@ -291,7 +291,7 @@ class UserSave{
         $mass = 'У Вас 0 рефералов:'."\n";
         if($user){
             $countref = ClassicPartner::where([['bot_id',$bot->id],['refer_id', $user->id]])->count();
-            $str = ClassicPartner::where([['bot_id',$bot->id],['refer_id', $user->id]])->simplePaginate(10, ['*'], 'page', $page);
+            $str = ClassicPartner::where([['bot_id',$bot->id],['refer_id', $user->id]])->simplePaginate(1, ['*'], 'page', $page);
             if($user->partner->where('bot_id', $bot->id)->first()->nastavnik){
                 $nast = $user->partner->where('bot_id', $bot->id)->first()->nastavnik->username;
                 if (is_numeric($user->partner->where('bot_id', $bot->id)->first()->nastavnik->username)) {
