@@ -343,7 +343,7 @@ class UserSave{
                 ],
                 'resize_keyboard' => true,
             ]);
-            if($countref > 10 && $page != null){
+            if($countref > 1 && $page != null){
                 if($user->bots->where('bot_id', $bot->id)->first()->last_message != null){
                     Log::info(json_encode($result, JSON_UNESCAPED_UNICODE));
                     return [
