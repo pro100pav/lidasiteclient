@@ -48,7 +48,7 @@ class BotsController extends Controller
                         }
 
                         $userad = UserSave::isadmin($result, $bot);
-                        $user = UserSave::index($result, $bot);
+                        $user = UserSave::index($result, $bot,$temp);
                         
                         if($user == 'spam'){
                             try {
@@ -78,7 +78,7 @@ class BotsController extends Controller
                             if(!strstr($message, '/proverkaPodpis')){
                                 if(mb_strlen($message) < 20){
                                     $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
-                                    $user->save();
+                                    $user->bots->where('bot_id', $bot->id)->first()->save();
                                 }
                             }
                             if($temp->privat == 1){
@@ -145,11 +145,11 @@ class BotsController extends Controller
                             return;
                         }
                         $message = $result["callback_query"]['data'];
-                        $user = UserSave::index($result, $bot);
+                        $user = UserSave::index($result, $bot,$temp);
                         if(!strstr($message, '/proverkaPodpis')){
                             if(mb_strlen($message) < 20){
                                 $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
-                                $user->save();
+                                $user->bots->where('bot_id', $bot->id)->first()->save();
                             }
                             
                         }
@@ -339,8 +339,8 @@ class BotsController extends Controller
                             try {
                                 $response = $telegram->$method($params);
                                 if(isset($response['message_id'])){
-                                    $user->last_message_id = $response["message_id"];
-                                    $user->save();
+                                    $user->bots->where('bot_id', $bot->id)->first()->last_message = $response["message_id"];
+                                    $user->bots->where('bot_id', $bot->id)->first()->save();
                                 }
                             } catch (TelegramResponseException $e) {
                                 $response = "Заблокирован";
@@ -409,12 +409,17 @@ class BotsController extends Controller
                                 ]);
                             }
                             $mesend = 0;
+                            $protect = false;
+                            if($item->privat == 1){
+                                $protect = true;
+                            }
                             if($item->images){
                                 if(mb_strlen($editmessage) > 1000){
                                     try {
                                         $response = $telegram->sendMessage([
                                             'chat_id' => $chat_id,
                                             'text' => $editmessage,
+                                            'protect_content' => $protect,
                                             'reply_markup' => $reply_markup,
                                         ]);
                                         $mesend = 1;
@@ -428,6 +433,7 @@ class BotsController extends Controller
                                             'chat_id' => $chat_id,
                                             'photo' => \Telegram\Bot\FileUpload\InputFile::create($item->images),
                                             'caption' => $editmessage,
+                                            'protect_content' => $protect,
                                             'reply_markup' => $reply_markup,
                                             'parse_mode' => 'MarkDown',
                                         ]);
@@ -445,6 +451,7 @@ class BotsController extends Controller
                                             'chat_id' => $chat_id,
                                             'video' => \Telegram\Bot\FileUpload\InputFile::create($item->video),
                                             'supports_streaming'=> true,
+                                            'protect_content' => $protect,
                                             'reply_markup' => $reply_markup,
                                             'parse_mode' => 'MarkDown',
                                         ]);
@@ -458,6 +465,7 @@ class BotsController extends Controller
                                             'video' => \Telegram\Bot\FileUpload\InputFile::create($item->video),
                                             'caption' => $editmessage,
                                             'supports_streaming'=> true,
+                                            'protect_content' => $protect,
                                             'reply_markup' => $reply_markup,
                                             'parse_mode' => 'MarkDown',
                                         ]);
@@ -473,6 +481,7 @@ class BotsController extends Controller
                                     $response = $telegram->sendVideoNote([
                                         'chat_id' => $chat_id,
                                         'video_note' => \Telegram\Bot\FileUpload\InputFile::create($item->video_notice),
+                                        'protect_content' => $protect,
                                     ]);
                                 } catch (TelegramResponseException $e) {
                                     $response = "Заблокирован";
@@ -484,6 +493,7 @@ class BotsController extends Controller
                                         $response = $telegram->sendMessage([
                                             'chat_id' => $chat_id,
                                             'text' => $editmessage,
+                                            'protect_content' => $protect,
                                             'reply_markup' => $reply_markup,
                                         ]);
                                     } catch (TelegramResponseException $e) {

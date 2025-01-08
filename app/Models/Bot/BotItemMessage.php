@@ -19,6 +19,7 @@ class BotItemMessage extends Model
         'function',
         'fixed',
         'video_notice',
+        'privat',
     ];
     public function buttons()
     {

@@ -18,6 +18,11 @@ class BotTemplate extends Model
         'active',
         'privat',
         'message',
+        'ref_dostigenie',
+        'images',
+        'video_notice',
+        'video',
+        'ref_message',
     ];
 
     public function messages()

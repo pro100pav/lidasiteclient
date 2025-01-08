@@ -42,6 +42,11 @@
                                             <p>{!! \preg_replace("#\r?\n#", '<br />', $item->message) !!}</p>
                                         </div>
                                         <div class="col-12">
+                                            @if ($item->function == 'referals')
+                                                <p class="h3">Это сообщение выводит список рефералов пользователя</p>
+                                            @endif
+                                        </div>
+                                        <div class="col-12">
                                             <div class="row">
                                                 @foreach ($item->buttons as $button)
                                                     <div class="col-6">
@@ -142,11 +147,11 @@
                 <div class="modal-body ">
                     <div class="col-12">
                         <p class="m-0">%name% - Обращение к собеседнику чата по имени</p>
-                        {{-- <p class="m-0">%userreflink% - Реф ссылка пользователя</p>
-                    <p class="m-0">%id% - Id пользователя</p>
-                    <p class="m-0">%referuser% - Пригласитель</p>
-                    <p class="m-0">%countine% - Колличество в первой линии</p>
-                    <p class="m-0">%alluser% - Колиичество пользователей всего в этом боте</p> --}}
+                        <p class="m-0">%userreflink% - Реф ссылка пользователя</p>
+                        <p class="m-0">%id% - Id пользователя</p>
+                        <p class="m-0">%referuser% - Пригласитель</p>
+                        <p class="m-0">%countine% - Колличество в первой линии</p>
+                        <p class="m-0">%alluser% - Колиичество пользователей всего в этом боте</p>
                     </div>
                     <form class="comment-form" method="POST"
                         action="{{ route('admin.botconstr.messageItemCreate', $message->id) }}">
@@ -202,16 +207,14 @@
                                         0%</div>
                                 </div>
                             </div>
-                            {{-- <div class="col-lg-12" id="fun">
-                            <div class="mb-3">
-                                <select class="default-select form-control wide mb-3" id="selfun" name="function">
-                                    <option value="0">Без функции</option>
-                                    <option value="referals">Список кандидатов</option>
-
-                                </select>
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" name="privat"
+                                    id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Защита от копирования
+                                </label>
                             </div>
-                        </div> --}}
-
 
                             <div class="col-lg-12">
                                 <div class="mb-3 mb-0">

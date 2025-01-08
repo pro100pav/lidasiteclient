@@ -73,15 +73,22 @@
                         <div class="col-lg-12">
                             <div class="mb-3">
                                 <label class="text-black font-w600 form-label">Имя <span class="required">*</span></label>
-                                <input type="text" class="form-control" value="" name="name" required>
+                                <input type="text" class="form-control namemesages" value="" name="name" required>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="mb-3">
                                 <label class="text-black font-w600 form-label">Триггер сообщения (команда для быстрого перехода к сообщению)</label>
-                                <input type="text" class="form-control" value="" placeholder="" oninput='this.value=this.value.replace(/[^\w\d]*/gi,"");' maxlength="10" required name="trigger">
+                                <input type="text" class="form-control trigmesages" value="" placeholder="" oninput='this.value=this.value.replace(/[^\w\d]*/gi,"");' maxlength="10" required name="trigger">
                                 <p class="small">Только латинские буквы</p>
                             </div>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" name="kandidat"
+                                id="kandadd">
+                            <label class="form-check-label" for="kandadd">
+                                Список рефералов
+                            </label>
                         </div>
                         <div class="col-lg-12">
                             <div class="mb-3 mb-0">

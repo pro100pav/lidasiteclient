@@ -15,7 +15,9 @@
                                 <div class="profile-skills mt-3 mb-2">
                                     <h4 class="text-primary mb-2">Чаты</h4>
                                     @foreach($user->bots as $bot)
-                                        <a href="{{route('admin.user.chat',$bot->chat->id)}}" class="btn btn-primary light btn-xs mb-1">Чат в боте "{{$bot->bot->name}}"</a>
+                                        @if($bot->chat)
+                                            <a href="{{route('admin.user.chat',$bot->chat->id)}}" class="btn btn-primary light btn-xs mb-1">Чат в боте "{{$bot->bot->name}}"</a>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>

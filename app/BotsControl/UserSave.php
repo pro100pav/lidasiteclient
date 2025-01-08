@@ -9,6 +9,8 @@ use App\Models\UserBalance;
 use App\Models\Profile;
 use App\Models\ClassicPartner;
 use Telegram\Bot\Keyboard\Keyboard;
+use Telegram\Bot\FileUpload\InputFile;
+use Telegram\Bot\Exceptions\TelegramResponseException;
 use App\Customs\Bot\BotCustomMethod;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -46,7 +48,7 @@ class UserSave{
             $user->save();
         }
     }
-    public static function index($result,$bot){
+    public static function index($result,$bot, $template){
 
         $chat_id = '';
         if (isset($result["message"])){
@@ -58,6 +60,9 @@ class UserSave{
             $message_id = $result["callback_query"]["message"]["message_id"];
         }
         $user = User::where('id_telegram', $chat_id)->first();
+        
+        $refer = null;
+
         if($user){
             if($user->blocked == 1){
                 return 'block';
@@ -65,7 +70,6 @@ class UserSave{
         }
         if(!$user){
             $nastavnik = 1;
-
             if(!isset($result["message"]["text"])){
                 return 'spam';
             }
@@ -75,6 +79,10 @@ class UserSave{
             if(strstr($result["message"]["text"], '/start') && strlen($result["message"]["text"]) > 6){
                 if(strlen($result["message"]["text"]) > 20){
                     return 'spam';
+                }
+                $nastavnik = substr($result["message"]["text"], 7);
+                if(!User::find($nastavnik)){
+                    $nastavnik = 1;
                 }
             }
             $username = null;
@@ -103,8 +111,6 @@ class UserSave{
                 $user->save();
             }
             
-            $nastavnik = 1;
-            
             if($user->id == 1){
                 $partner = new ClassicPartner();
                 $partner->bot_id = $bot->id;
@@ -115,6 +121,15 @@ class UserSave{
                 $partner->bot_id = $bot->id;
                 $partner->refer_id = $nastavnik;
                 $user->partner()->save($partner);
+
+                $refer = User::find($nastavnik);
+
+                Notice::create([
+                    'bot_id' => $bot->id,
+                    'user_id' => $nastavnik,
+                    'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$username,
+                    'send' => 0,
+                ]);
             }
 
             $bt = new UserBot();
@@ -126,57 +141,139 @@ class UserSave{
     
             $profile = new Profile();
             $user->profile()->save($profile);
-
-            // $reff = User::find($nastavnik);
             
-            // Notice::create([
-            //     'bot_id' => $bot->id,
-            //     'user_id' => $nastavnik,
-            //     'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$username,
-            //     'send' => 0,
-            // ]);
-                
             
-            return $user;
-        }
-        if (isset($result["message"])){
+        }elseif(isset($result["message"])){
             if (isset($result["message"]["text"])){
                 if(strstr($result["message"]["text"], '/start') && strlen($result["message"]["text"]) > 6){
                     if(strlen($result["message"]["text"]) > 20){
                         return 'spam';
                     }
-                    $nastavnik = 1;
-                }
-                $nastavnik = 1;
-                $partnerka = ClassicPartner::where([['bot_id', $bot->id],['user_id',$user->id]])->first();
-                if(!$partnerka){
-                    if($user->id == 1){
-                        $partner = new ClassicPartner();
-                        $partner->bot_id = $bot->id;
-                        $partner->refer_id = null;
-                        $user->partner()->save($partner);
-                    }else{
-                        $partner = new ClassicPartner();
-                        $partner->bot_id = $bot->id;
-                        $partner->refer_id = $nastavnik;
-                        $user->partner()->save($partner);
-                    }
-                    
-                    
-                    $bt = new UserBot();
-                    $bt->bot_id = $bot->id;
-                    $user->bots()->save($bt);
+                    $nastavnik = substr($result["message"]["text"], 7);
+                    $usNast = UserBot::where([['user_id', $nastavnik],['bot_id', $bot->id]])->first();
+                    if($usNast){
+                        $partnerka = ClassicPartner::where([['bot_id', $bot->id],['user_id',$user->id]])->first();
+                        if(!$partnerka){
+                            $partner = new ClassicPartner();
+                            $partner->bot_id = $bot->id;
+                            $partner->refer_id = $nastavnik;
+                            $user->partner()->save($partner);
+                            
+                            $bt = new UserBot();
+                            $bt->bot_id = $bot->id;
+                            $user->bots()->save($bt);
 
-                    // $reff = User::find($nastavnik);
-                    // Notice::create([
-                    //     'bot_id' => $bot->id,
-                    //     'user_id' => $nastavnik,
-                    //     'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username,
-                    //     'send' => 0,
-                    // ]);
+                            $refer = User::find($nastavnik);
+
+                            Notice::create([
+                                'bot_id' => $bot->id,
+                                'user_id' => $nastavnik,
+                                'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username.' id '.$user->id,
+                                'send' => 0,
+                                
+                            ]);
+                        }
+                    }else{
+                        if($user->id == 1){
+                            $partner = new ClassicPartner();
+                            $partner->bot_id = $bot->id;
+                            $partner->refer_id = null;
+                            $user->partner()->save($partner);
+
+                            $bt = new UserBot();
+                            $bt->bot_id = $bot->id;
+                            $user->bots()->save($bt);
+                        }else{
+                            $partner = new ClassicPartner();
+                            $partner->bot_id = $bot->id;
+                            $partner->refer_id = 1;
+                            $user->partner()->save($partner);
+
+                            $bt = new UserBot();
+                            $bt->bot_id = $bot->id;
+                            $user->bots()->save($bt);
+
+                            $refer = User::find($nastavnik);
+                            
+                            Notice::create([
+                                'bot_id' => $bot->id,
+                                'user_id' => $nastavnik,
+                                'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username.' id '.$user->id,
+                                'send' => 0,
+                                
+                            ]);
+                        }
+
+                    }
                 }
             }
-            
+        }
+
+        if($refer){
+            if($template->ref_dostigenie > 0){
+                if(ClassicPartner::where([['bot_id',$bot->id],['refer_id', $refer->id]])->count() == $template->ref_dostigenie){
+                    
+                    
+                    if($template->video){
+                        $method = 'sendVideo';
+                        $params = [
+                            'chat_id' => $refer->id_telegram,
+                            'video' => \Telegram\Bot\FileUpload\InputFile::create($template->video_note),
+
+                        ];
+                        $res = BotCustomMethod::index($method, $param, $bot->token);
+                    }
+
+                    if($template->images){
+                        if(mb_strlen($editmessage) > 1000){
+                            $method = 'sendPhoto';
+                            $params = [
+                                'chat_id' => $refer->id_telegram,
+                                'photo' => \Telegram\Bot\FileUpload\InputFile::create($template->images),
+                                'caption' => $template->ref_message,
+                                'parse_mode' => 'HTML'
+                            ];
+                            $res = BotCustomMethod::index($method, $param, $bot->token);
+                        }else{
+                            $method = 'sendPhoto';
+                            $params = [
+                                'chat_id' => $refer->id_telegram,
+                                'photo' => \Telegram\Bot\FileUpload\InputFile::create($template->images),
+                                'parse_mode' => 'HTML'
+                            ];
+                            $res = BotCustomMethod::index($method, $param, $bot->token);
+                            $method = 'sendMessage';
+                            $params = [
+                                'chat_id' => $refer->id_telegram,
+                                'text' => $template->ref_message;
+                                'parse_mode' => 'HTML'
+                            ];
+                            $res = BotCustomMethod::index($method, $param, $bot->token);
+                        }
+                    }else{
+                        if($template->ref_message){
+                            $method = 'sendMessage';
+                            $params = [
+                                'chat_id' => $refer->id_telegram,
+                                'text' => $template->ref_message;
+                                'parse_mode' => 'HTML'
+                            ];
+                            $res = BotCustomMethod::index($method, $param, $bot->token);
+                        }
+                    }
+
+                    if($template->video_notice){
+                        $method = 'sendVideoNote';
+                        $params = [
+                            'chat_id' => $refer->id_telegram,
+                            'video_note' => \Telegram\Bot\FileUpload\InputFile::create($template->video_note),
+
+                        ];
+                        $res = BotCustomMethod::index($method, $param, $bot->token);
+                    }
+                    
+                }
+            }
         }
         return $user;
     }
@@ -247,12 +344,12 @@ class UserSave{
                 'resize_keyboard' => true,
             ]);
             if($countref > 10 && $page != null){
-                if($user->last_message_id != null){
+                if($user->bots->where('bot_id', $bot->id)->first()->last_message != null){
                     return [
                         'method' => 'editMessageText',
                         'params' => [
                             'chat_id' => $req,
-                            'message_id' => $user->last_message_id,
+                            'message_id' => $user->bots->where('bot_id', $bot->id)->first()->last_message,
                             'text' => $mass,
                             'reply_markup' => $reply_markup,
                         ]

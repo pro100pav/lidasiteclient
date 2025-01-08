@@ -676,6 +676,41 @@ if($('.videoMessage2').length){
 			}
 		})
     });
+    $("body").on("click", "#kandadd", function() {
+		$('.namemesages').val('Список рефералов');
+		$('.trigmesages').val('/kandidat');
+	})
+    $("body").on("click", ".deltempel", function() {
+		var el = $(this)
+        var mediaElement = el.prev('video, img');
+		var mediaSrc = mediaElement.attr('src');
+
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		$.ajax({
+			type: 'POST',
+			url: '/manager/bottemplates/template/delete/file',
+			data: {
+				templateId: $('#templateid').html(),
+				tip: el.attr('data-type-media'),
+				file_url: mediaSrc,
+				
+			},
+			success: function(html) {
+				location.reload();
+
+			},
+			error: function(xhr) {
+				$('.error').html('');
+				$.each(xhr.responseJSON.errors, function(key, value) {
+					$('.error').html(value);
+				});
+			}
+		})
+    });
     $("body").on("click", ".editbtn", function() {
         $('#itemid').val($(this).attr('data-item-id'));
         $('input[name="textbutton"]').val($(this).attr('data-item-text'));

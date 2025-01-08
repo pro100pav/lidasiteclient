@@ -17,10 +17,10 @@
                 <div class="d-none" id="mesid">{{$message->id}}</div>
                 <div class="col-12">
                     <p class="m-0">%name% - Обращение к собеседнику чата по имени</p>
-                    {{-- <p class="m-0">%userreflink% - Реф ссылка пользователя</p> --}}
-                    {{-- <p class="m-0">%id% - Id пользователя</p>
+                    <p class="m-0">%userreflink% - Реф ссылка пользователя</p>
+                    <p class="m-0">%id% - Id пользователя</p>
                     <p class="m-0">%referuser% - Пригласитель</p>
-                    <p class="m-0">%countine% - Колличество в первой линии</p> --}}
+                    <p class="m-0">%countine% - Колличество в первой линии</p>
                     <p class="m-0">%alluser% - Колиичество пользователей всего в этом боте</p>
 
                 </div>
@@ -30,6 +30,9 @@
                     <input type="hidden" name="photomessage" id="photomessage" value="{{$message->images}}">
                     <input type="hidden" name="videomessage" id="videomessage" value="{{$message->video}}">
                     <input type="hidden" name="videomessagenotice" id="videomessagenotice" value="{{$message->video_notice}}">
+                    @if ($message->function == 'referals')
+                    <p class="h3">Это сообщение выводит список рефералов пользователя</p>
+                    @else
                     <div class="row"> 
                         <div class="col-lg-12">
                             <div class="mb-3">
@@ -80,7 +83,13 @@
                             </div>
                         @endif
                         
-                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" name="privat"
+                                id="flexCheckDefault" @if ($message->privat == 1) checked @endif>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Защита от копирования
+                            </label>
+                        </div>
 
                         <div class="col-lg-12">
                             <div class="mb-3 mb-0">
@@ -88,6 +97,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </form>
                 <div class="row">
                     @if ($message->images)

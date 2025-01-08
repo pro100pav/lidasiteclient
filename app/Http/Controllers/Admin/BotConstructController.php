@@ -88,6 +88,11 @@ class BotConstructController extends Controller
             $temp->active = $active;
             $temp->privat = $request->privat;
             $temp->message = $request->message;
+            $temp->ref_message = $request->ref_message;
+            $temp->ref_dostigenie = $request->ref_dostigenie;
+            $temp->images = $request->images;
+            $temp->video_notice = $request->video_notice;
+            $temp->video = $request->video;
             $temp->save();
             $degr = GroupTemplate::where('bot_template_id',$temp->id)->delete();
             if($request->group){
@@ -160,13 +165,30 @@ class BotConstructController extends Controller
     }
 
     public function messageCreate(Request $request, $temp){
-        $message = BotMessage::create([
-            'bot_template_id' => $temp,
-            'name' => $request->name,
-            'trigger' => '/'.$request->trigger,
-        ]);
-        $message->id_message = $message->id;
-        $message->save();
+        if($request->kandidat == 1){
+            $message = BotMessage::create([
+                'bot_template_id' => $temp,
+                'name' => 'Список рефералов',
+                'trigger' => '/kandidat',
+            ]);
+            $message->id_message = $message->id;
+            $message->save();
+
+            $message = BotItemMessage::create([
+                'bot_message_id' => $message->id,
+                'function' => 'referals',
+            ]);
+
+        }else{
+            $message = BotMessage::create([
+                'bot_template_id' => $temp,
+                'name' => $request->name,
+                'trigger' => '/'.$request->trigger,
+            ]);
+            $message->id_message = $message->id;
+            $message->save();
+        }
+        
         return redirect()->route('admin.botconstr.templateShow', $temp);
     }
     
@@ -175,6 +197,10 @@ class BotConstructController extends Controller
         if($request->fixed){
             $fixed = 1;
         }
+        $privat = 0;
+        if($request->privat == 1){
+            $privat = 1;
+        }
         $message = BotItemMessage::create([
             'bot_message_id' => $request->messageid,
             'message' => $request->text,
@@ -182,6 +208,7 @@ class BotConstructController extends Controller
             'video' => $request->videomessage,
             'function' => $request->function,
             'video_notice' => $request->videomessagenotice,
+            'privat' => $privat,
         ]);
         return redirect()->back();
     }
@@ -192,6 +219,11 @@ class BotConstructController extends Controller
     }
     public function messageItemEditSave(Request $request, $id){
 
+        $privat = 0;
+        if($request->privat == 1){
+            $privat = 1;
+        }
+
         $message = BotItemMessage::find($id);
         $message->bot_message_id = $request->messageid;
         $message->message = $request->text;
@@ -199,8 +231,55 @@ class BotConstructController extends Controller
         $message->video = $request->videomessage;
         $message->function = $request->function;
         $message->video_notice = $request->videomessagenotice;
+        $message->privat = $privat;
         $message->save();
         return redirect()->back();
+    }
+    public function deleteFileTemp(Request $request)
+    {
+        $message = BotTemplate::find($request->templateId);
+        $request->validate([
+           'file_url' => 'required|string'
+        ]);
+
+        $fileUrl = $request->input('file_url');
+
+        // Извлечение пути к файлу относительно storage/app/public
+        $pathInStorage = parse_url($fileUrl, PHP_URL_PATH);
+        $pathInStorage =  str_replace('/storage/', '', $pathInStorage);
+
+        // Проверяем, что путь начинается с нужной директории (для безопасности)
+        if (strpos($pathInStorage, 'videosTelegram/') === 0 ||  strpos($pathInStorage, 'images/') === 0) {
+           // Проверка существования файла
+            if(Storage::disk('public')->exists($pathInStorage)){
+                // Удаление файла
+                if(Storage::disk('public')->delete($pathInStorage)){
+                    if($request->tip == 'video'){
+                        $message->video = null;
+                        $message->save();
+                    }
+                    if($request->tip == 'images'){
+                        $message->images = null;
+                        $message->save();
+                    }
+                    if($request->tip == 'video_notice'){
+                        $message->video_notice = null;
+                        $message->save();
+                    }
+                    
+                    return response()->json(['message' => 'File deleted successfully'], 200);
+                }else {
+                    return response()->json(['message' => 'Failed to delete the file'], 500);
+                }
+            }else{
+                return response()->json(['message' => 'File not found'], 404);
+            }
+
+
+        } else {
+           return response()->json(['message' => 'Invalid file path'], 400);
+        }
+
     }
     public function deleteFile(Request $request)
     {

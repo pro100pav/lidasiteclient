@@ -70,7 +70,7 @@
     <script src="{{asset('/assets/libs/summer/summernote-lite.js')}}"></script>
     <script src="{{asset('/assets/libs/summer/lang/summernote-ru-RU.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.1.0/resumable.min.js"></script>
-    <script src="{{ asset('/admintheme/js/custom.js')}}"></script>
+    <script src="{{ asset('/admintheme/js/custom.js?ver=1')}}"></script>
 	<script src="{{ asset('/admintheme/js/dlabnav-init.js')}}"></script>
     @stack('script')
 </body>
