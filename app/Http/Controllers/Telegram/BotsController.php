@@ -332,8 +332,8 @@ class BotsController extends Controller
                 }
                 if($resPrivat == 0){
                     foreach($mes->items as $item){
-                        
                         if($item->function == 'referals'){
+                            Log::info(json_encode($item->function, JSON_UNESCAPED_UNICODE));
                             $data = UserSave::structura($chat_id, $message, $bot);
                             $method = $data['method'];
                             $params = $data['params'];
