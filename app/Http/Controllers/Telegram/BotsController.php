@@ -76,6 +76,8 @@ class BotsController extends Controller
                             return;
                         }else{
                             if(!strstr($message, '/proverkaPodpis') || !strstr($message, '/kandidat')){
+                                Log::info(json_encode(111, JSON_UNESCAPED_UNICODE));
+                                Log::info(json_encode(strstr($message, '/kandidat'), JSON_UNESCAPED_UNICODE));
                                 if(mb_strlen($message) < 20){
                                     $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
                                     $user->bots->where('bot_id', $bot->id)->first()->save();
@@ -147,6 +149,8 @@ class BotsController extends Controller
                         $message = $result["callback_query"]['data'];
                         $user = UserSave::index($result, $bot,$temp);
                         if(!strstr($message, '/proverkaPodpis') || !strstr($message, '/kandidat')){
+                            Log::info(json_encode(222, JSON_UNESCAPED_UNICODE));
+                            Log::info(json_encode(strstr($message, '/kandidat'), JSON_UNESCAPED_UNICODE));
                             if(mb_strlen($message) < 20){
                                 $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
                                 $user->bots->where('bot_id', $bot->id)->first()->save();
