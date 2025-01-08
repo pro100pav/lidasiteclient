@@ -245,7 +245,7 @@ class UserSave{
                             $method = 'sendMessage';
                             $params = [
                                 'chat_id' => $refer->id_telegram,
-                                'text' => $template->ref_message;
+                                'text' => $template->ref_message,
                                 'parse_mode' => 'HTML'
                             ];
                             $res = BotCustomMethod::index($method, $param, $bot->token);
@@ -255,7 +255,7 @@ class UserSave{
                             $method = 'sendMessage';
                             $params = [
                                 'chat_id' => $refer->id_telegram,
-                                'text' => $template->ref_message;
+                                'text' => $template->ref_message,
                                 'parse_mode' => 'HTML'
                             ];
                             $res = BotCustomMethod::index($method, $param, $bot->token);
