@@ -75,7 +75,7 @@ class BotsController extends Controller
                         }elseif($user == 'block'){
                             return;
                         }else{
-                            if(!strstr($message, '/proverkaPodpis') || !strstr($message, '/referals')){
+                            if(!strstr($message, '/proverkaPodpis') || !strstr($message, '/kandidat')){
                                 if(mb_strlen($message) < 20){
                                     $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
                                     $user->bots->where('bot_id', $bot->id)->first()->save();
@@ -146,7 +146,7 @@ class BotsController extends Controller
                         }
                         $message = $result["callback_query"]['data'];
                         $user = UserSave::index($result, $bot,$temp);
-                        if(!strstr($message, '/proverkaPodpis') || !strstr($message, '/referals')){
+                        if(!strstr($message, '/proverkaPodpis') || !strstr($message, '/kandidat')){
                             if(mb_strlen($message) < 20){
                                 $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
                                 $user->bots->where('bot_id', $bot->id)->first()->save();
