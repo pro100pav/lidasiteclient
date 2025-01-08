@@ -233,7 +233,7 @@ class UserSave{
                                 'caption' => $template->ref_message,
                                 'parse_mode' => 'HTML'
                             ];
-                            $res = BotCustomMethod::index($method, $param, $bot->token);
+                            $res = BotCustomMethod::index($method, $params, $bot->token);
                         }else{
                             $method = 'sendPhoto';
                             $params = [
@@ -241,14 +241,14 @@ class UserSave{
                                 'photo' => \Telegram\Bot\FileUpload\InputFile::create($template->images),
                                 'parse_mode' => 'HTML'
                             ];
-                            $res = BotCustomMethod::index($method, $param, $bot->token);
+                            $res = BotCustomMethod::index($method, $params, $bot->token);
                             $method = 'sendMessage';
                             $params = [
                                 'chat_id' => $refer->id_telegram,
                                 'text' => $template->ref_message,
                                 'parse_mode' => 'HTML'
                             ];
-                            $res = BotCustomMethod::index($method, $param, $bot->token);
+                            $res = BotCustomMethod::index($method, $params, $bot->token);
                         }
                     }else{
                         if($template->ref_message){
@@ -258,7 +258,7 @@ class UserSave{
                                 'text' => $template->ref_message,
                                 'parse_mode' => 'HTML'
                             ];
-                            $res = BotCustomMethod::index($method, $param, $bot->token);
+                            $res = BotCustomMethod::index($method, $params, $bot->token);
                         }
                     }
 
@@ -269,7 +269,7 @@ class UserSave{
                             'video_note' => \Telegram\Bot\FileUpload\InputFile::create($template->video_note),
 
                         ];
-                        $res = BotCustomMethod::index($method, $param, $bot->token);
+                        $res = BotCustomMethod::index($method, $params, $bot->token);
                     }
                     
                 }
