@@ -75,6 +75,7 @@ class BotsController extends Controller
                         }elseif($user == 'block'){
                             return;
                         }else{
+                            Log::info(json_encode(strstr($message, 'kandidat'), JSON_UNESCAPED_UNICODE));
                             if(!strstr($message, '/proverkaPodpis') || !strstr($message, '/kandidat')){
                                 Log::info(json_encode(111, JSON_UNESCAPED_UNICODE));
                                 Log::info(json_encode(strstr($message, '/kandidat'), JSON_UNESCAPED_UNICODE));
