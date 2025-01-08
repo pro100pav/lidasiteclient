@@ -77,6 +77,7 @@ class BotsController extends Controller
                         }else{
                             if(!strstr($message, '/proverkaPodpis')){
                                 if(mb_strlen($message) < 20){
+                                    Log::info(json_encode(1121221, JSON_UNESCAPED_UNICODE));
                                     $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
                                     $user->bots->where('bot_id', $bot->id)->first()->save();
                                 }
@@ -333,7 +334,7 @@ class BotsController extends Controller
                 if($resPrivat == 0){
                     foreach($mes->items as $item){
                         if($item->function == 'referals'){
-                            Log::info(json_encode($item->function, JSON_UNESCAPED_UNICODE));
+                            
                             $data = UserSave::structura($chat_id, $message, $bot);
                             $method = $data['method'];
                             $params = $data['params'];
