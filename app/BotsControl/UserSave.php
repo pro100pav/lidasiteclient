@@ -345,7 +345,7 @@ class UserSave{
             ]);
             if($countref > 1 && $page != null){
                 if($user->bots->where('bot_id', $bot->id)->first()->last_message != null){
-                    Log::info(json_encode($result, JSON_UNESCAPED_UNICODE));
+                    Log::info(json_encode($page, JSON_UNESCAPED_UNICODE));
                     return [
                         'method' => 'editMessageText',
                         'params' => [
