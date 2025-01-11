@@ -19,7 +19,6 @@
                 </div>
             </div>
         </div>
-        
     </div>
 </div>
 
@@ -71,7 +70,30 @@
         </div>
     </div>
 </div>
+@else
+    @if ($globalData->indefinitely != 1)
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Расширение ключа</h3>
+                    </div>
+                    <div class="card-body" style="display: block;">
+                        <form action="{{ route('admin.active') }}" method="post">
+                            @csrf
+                            
+                            <div class="custom-form-floating mb-2">
+                                <label for="">Ключ</label>
+                                <input type="text" class="form-control" name="key" value="">
+                            </div>
+                            <button class="btn btn-solid sendpoint" type="submit">Активировать</button>
+                        </form>
+        
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endif
-
 
 @endsection

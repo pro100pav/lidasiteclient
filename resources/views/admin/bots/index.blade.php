@@ -12,7 +12,12 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Ваши боты</h4>
-                <p>Доступно всего: {{$globalData->bot}}</p>
+                @if ($globalData->bot > 999)
+                    <p>Доступно всего: Безлимитно</p>
+                @else
+                    <p>Доступно всего: {{$globalData->bot}}</p>
+                @endif
+                
             </div>
             <div class="card-body">
                 <div class="table-responsive">
