@@ -78,6 +78,9 @@ class UserController extends Controller
     }
     public function chat(Request $request, $chat){
         $chat = ChatUser::find($chat);
+        if(!$chat){
+            return redirect()->back()->with('message', 'Не найден чат');
+        }
         $user = $chat->botUs->user;
         return view('admin.user.chat', compact('user','chat'));
     }

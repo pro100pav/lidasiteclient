@@ -225,7 +225,7 @@ class UserSave{
                     }
 
                     if($template->images){
-                        if(mb_strlen($editmessage) > 1000){
+                        if(mb_strlen($template->ref_message) > 1000){
                             $method = 'sendPhoto';
                             $params = [
                                 'chat_id' => $refer->id_telegram,
