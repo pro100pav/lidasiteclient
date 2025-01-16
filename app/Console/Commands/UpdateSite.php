@@ -37,7 +37,7 @@ class UpdateSite extends Command
                 }
                 Log::info(json_encode('upd', JSON_UNESCAPED_UNICODE));
             }
-            $updateS->type = 1:
+            $updateS->type = 1;
             $updateS->save():
             
         }
