@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class UpdateSistem extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'new_update',
+        'version',
+        'type',
+    ];
 }

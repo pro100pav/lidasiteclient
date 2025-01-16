@@ -1,138 +1,42 @@
 <?php
 namespace App\Console\Commands;
 
+use App\Models\UpdateSistem;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Artisan;
 
 class UpdateSite extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'git:pull';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Pull files from GIT';
 
-    /**
-     * Is the code already updated or not
-     * 
-     * @var boolean
-     */
-    private $alreadyUpToDate;
-
-    /**
-     * Log from git pull
-     * 
-     * @var array
-     */
-    private $pullLog = [];
-
-    /**
-     * Log from composer install
-     * 
-     * @var boolean
-     */
-    private $composerLog = [];
-
-    /**
-     * Log from composer install
-     * 
-     * @var boolean
-     */
-    private $migrateLog = [];
-
-
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
     }
 
+    public function handle(){
 
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-
-        if(!$this->runPull()) {
-
-            $this->error("An error occurred while executing 'git pull'. \nLogs:");
-            
-            foreach($this->pullLog as $logLine) {
-                $this->info($logLine);
-            }
-
-            return;
-        }
-
-
-        if($this->alreadyUpToDate) {
-            $this->info("The application is already up-to-date");
-            return;
-        }
-
-
-            
-        
-
-        $this->info("Succesfully updated the application.");
-
-
-    }
-
-
-
-
-    /**
-     * Run git pull process
-     * 
-     * @return boolean
-     */
-
-    private function runPull()
-    {
-
-        $process = new Process(['git', 'pull','origin','master']);
-        $this->info("Running 'git pull'");
-
-        $process->run(function($type, $buffer) {
-            $this->pullLog[] = $buffer;
-
-            if($buffer == "Already up to date.\n") {
-                $this->alreadyUpToDate = TRUE;
-            }
-            
-        });
-        
-        return $process->isSuccessful();
-
-    }
-
-
-
-    /**
-     * Run composer install process
-     * 
-     * @return boolean
-     */
-
+        $updateS = UpdateSistem::where('type', 0)->first();
+        if($updateS){
+            $commands = [
+                'git pull origin master',
+            ];
     
+            foreach ($commands as $command) {
+                echo "Выполняю: $command\n";
+                $output = [];
+                $return_var = 0;
+                exec($command, $output, $return_var);
+            
+                if ($return_var === 0) {
+                    echo "Успех\n";
+                } else {
+                    echo "Ошибка (код $return_var):\n" . implode("\n", $output) . "\n";
+                }
+            }
+        }
+        return;
+    }
 
 }

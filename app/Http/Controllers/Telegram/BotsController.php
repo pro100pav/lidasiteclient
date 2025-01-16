@@ -355,8 +355,6 @@ class BotsController extends Controller
                             $editmessage = '';
                             if($item->message){
                                 $editmessage = $this->editText($user, $res, $item->message, $bot);
-                                Log::info(json_encode($usBot, JSON_UNESCAPED_UNICODE));
-                                Log::info(json_encode($usBot->chat, JSON_UNESCAPED_UNICODE));
                                 if($usBot->chat){
                                     $mc = new ChatUserMessage();
                                     $mc->message_bot = $editmessage;
