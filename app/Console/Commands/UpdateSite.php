@@ -18,7 +18,8 @@ class UpdateSite extends Command
 
     public function handle(){
 
-        
+        $updateS = UpdateSistem::where('type', 0)->first();
+        if($updateS){
             $commands = [
                 'git pull origin master',
             ];
@@ -36,9 +37,10 @@ class UpdateSite extends Command
                 }
                 Log::info(json_encode('upd', JSON_UNESCAPED_UNICODE));
             }
+            $updateS->type = 1;
+            $updateS->save();
             
-            
-        
+        }
         return;
     }
 
