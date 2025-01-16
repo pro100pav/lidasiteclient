@@ -5,6 +5,7 @@ use App\Models\UpdateSistem;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
 class UpdateSite extends Command
 {
@@ -34,6 +35,7 @@ class UpdateSite extends Command
                 } else {
                     echo "Ошибка (код $return_var):\n" . implode("\n", $output) . "\n";
                 }
+                Log::info(json_encode('upd', JSON_UNESCAPED_UNICODE));
             }
             $updateS->type = 1:
             $updateS->save():
