@@ -35,6 +35,9 @@ class UpdateSite extends Command
                     echo "Ошибка (код $return_var):\n" . implode("\n", $output) . "\n";
                 }
             }
+            $updateS->type = 1:
+            $updateS->save():
+            
         }
         return;
     }
