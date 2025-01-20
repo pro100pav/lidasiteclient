@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('SendNoti:cron')->everyMinute();
         $schedule->command('SendBotAds:cron')->everyMinute();
-        $schedule->command('git:pull')->everyMinute();
+        $schedule->command('git:pull')->everyFifteenMinutes();
 
     }
 
