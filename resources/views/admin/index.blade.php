@@ -35,9 +35,9 @@
                                     "Демо" Доступна до {{ Carbon\Carbon::parse($globalData->active_at)->format('d.m.Y') }}
                                 @else
                                     @if ($globalData->indefinitely == 1)
-                                    Бессрочная
+                                    Бессрочная без ограничений по чат ботам
                                     @else
-                                    Активированая до {{ Carbon\Carbon::parse($globalData->active_at)->format('d.m.Y') }}
+                                    Годовая без ограничений по чат ботам Активированая до {{ Carbon\Carbon::parse($globalData->active_at)->format('d.m.Y') }}
                                     @endif
                                 @endif
                             </span>
