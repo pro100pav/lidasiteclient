@@ -78,8 +78,13 @@ class BotsController extends Controller
                             if(!strstr($message, '/proverkaPodpis')){
                                 if(!strstr($message, '/kandidat')){
                                     if(mb_strlen($message) < 20){
-                                        $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
-                                        $user->bots->where('bot_id', $bot->id)->first()->save();
+                                        if($user->bots->where('bot_id', $bot->id)->first()){
+                                            $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
+                                            $user->bots->where('bot_id', $bot->id)->first()->save();
+                                        }else{
+                                            return;
+                                        }
+                                        
                                     }
                                 }
                                 
