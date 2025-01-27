@@ -146,7 +146,7 @@
                 </div>
                 <div class="modal-body ">
                     <div class="col-12">
-                        <p class="m-0">%name% - Обращение к собеседнику чата по имени</p>
+                        <p class="m-0">%name% - Обращение к собеседнику чата по имени и фамилии</p>
                         <p class="m-0">%userreflink% - Реф ссылка пользователя</p>
                         <p class="m-0">%id% - Id пользователя</p>
                         <p class="m-0">%referuser% - Пригласитель</p>
