@@ -82,9 +82,6 @@ class BotsController extends Controller
                                         if($user->bots->where('bot_id', $bot->id)->first()){
                                             $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
                                             $user->bots->where('bot_id', $bot->id)->first()->save();
-                                        }else{
-                                            Log::info(json_encode(1211, JSON_UNESCAPED_UNICODE));
-                                            return;
                                         }
                                         
                                     }
