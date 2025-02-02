@@ -75,6 +75,7 @@ class BotsController extends Controller
                         }elseif($user == 'block'){
                             return;
                         }else{
+                            Log::info(json_encode(12, JSON_UNESCAPED_UNICODE));
                             if(!strstr($message, '/proverkaPodpis')){
                                 if(!strstr($message, '/kandidat')){
                                     if(mb_strlen($message) < 20){
@@ -90,6 +91,7 @@ class BotsController extends Controller
                                 
                             }
                             if($temp->privat == 1){
+                                Log::info(json_encode(11, JSON_UNESCAPED_UNICODE));
                                 $groups = $temp->groups;
                                 if($groups->count() > 0){
                                     $resPrivat = $this->privatMessage($telegram, $user, $chat_id, $groups);
@@ -124,7 +126,7 @@ class BotsController extends Controller
                                 }
                                 
                             }else{
-                                Log::info(json_encode(12, JSON_UNESCAPED_UNICODE));
+                                
                                 $this->chatMenegment($telegram, $user, $result, $chat_id, $message, $temp, $bot, true);
                             }
                             
