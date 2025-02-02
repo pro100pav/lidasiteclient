@@ -35,7 +35,7 @@ class BotsController extends Controller
         $token = $bot->token;
         $telegram = new Api($token);
         $result = $telegram->getWebhookUpdates();
-        //Log::info(json_encode($result, JSON_UNESCAPED_UNICODE));
+        Log::info(json_encode($result, JSON_UNESCAPED_UNICODE));
         if($bot){
             $temp = BotTemplate::where([['bot_id', $bot->id],['active', 1]])->first();
             if($temp){
