@@ -83,7 +83,6 @@ class BotsController extends Controller
                                             $user->bots->where('bot_id', $bot->id)->first()->last_message = $message;
                                             $user->bots->where('bot_id', $bot->id)->first()->save();
                                         }
-                                        
                                     }
                                 }
                                 
