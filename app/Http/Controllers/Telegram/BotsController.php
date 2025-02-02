@@ -35,7 +35,7 @@ class BotsController extends Controller
         $token = $bot->token;
         $telegram = new Api($token);
         $result = $telegram->getWebhookUpdates();
-        Log::info(json_encode($result, JSON_UNESCAPED_UNICODE));
+        
         if($bot){
             $temp = BotTemplate::where([['bot_id', $bot->id],['active', 1]])->first();
             if($temp){
@@ -286,6 +286,8 @@ class BotsController extends Controller
 
     function chatMenegment($telegram, $user, $res, $chat_id, $message, $temp, $bot, $trigger = null){
         $usBot = $user->bots->where('bot_id', $bot->id)->first();
+        Log::info(json_encode($res, JSON_UNESCAPED_UNICODE));
+        Log::info(json_encode($usBot, JSON_UNESCAPED_UNICODE));
         if($usBot->chat){
             $mc = new ChatUserMessage();
             $mc->message_user = $message;
