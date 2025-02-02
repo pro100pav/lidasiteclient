@@ -146,126 +146,127 @@ class UserSave{
         }elseif(isset($result["message"])){
             if (isset($result["message"]["text"])){
                 if(strstr($result["message"]["text"], '/start')){
-                    if(strlen($result["message"]["text"]) > 20){
-                        return 'spam';
-                    }
-                    if(strlen($result["message"]["text"]) > 6){
-                        $nastavnik = substr($result["message"]["text"], 7);
-                        $usNast = UserBot::where([['user_id', $nastavnik],['bot_id', $bot->id]])->first();
-                        if($usNast){
-                            $partnerka = ClassicPartner::where([['bot_id', $bot->id],['user_id',$user->id]])->first();
-                            if(!$partnerka){
-                                $partner = new ClassicPartner();
-                                $partner->bot_id = $bot->id;
-                                $partner->refer_id = $nastavnik;
-                                $user->partner()->save($partner);
-                                
-                                $bt = new UserBot();
-                                $bt->bot_id = $bot->id;
-                                $user->bots()->save($bt);
-    
-                                $refer = User::find($nastavnik);
-    
-                                Notice::create([
-                                    'bot_id' => $bot->id,
-                                    'user_id' => $nastavnik,
-                                    'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username.' id '.$user->id,
-                                    'send' => 0,
+                    if(!$user->bots->where('bot_id', $bot->id)->first()){
+                        if(strlen($result["message"]["text"]) > 20){
+                            return 'spam';
+                        }
+                        if(strlen($result["message"]["text"]) > 6){
+                            $nastavnik = substr($result["message"]["text"], 7);
+                            $usNast = UserBot::where([['user_id', $nastavnik],['bot_id', $bot->id]])->first();
+                            if($usNast){
+                                $partnerka = ClassicPartner::where([['bot_id', $bot->id],['user_id',$user->id]])->first();
+                                if(!$partnerka){
+                                    $partner = new ClassicPartner();
+                                    $partner->bot_id = $bot->id;
+                                    $partner->refer_id = $nastavnik;
+                                    $user->partner()->save($partner);
                                     
-                                ]);
+                                    $bt = new UserBot();
+                                    $bt->bot_id = $bot->id;
+                                    $user->bots()->save($bt);
+        
+                                    $refer = User::find($nastavnik);
+        
+                                    Notice::create([
+                                        'bot_id' => $bot->id,
+                                        'user_id' => $nastavnik,
+                                        'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username.' id '.$user->id,
+                                        'send' => 0,
+                                        
+                                    ]);
+                                }
+                            }else{
+                                if($user->id == 1){
+                                    $partner = new ClassicPartner();
+                                    $partner->bot_id = $bot->id;
+                                    $partner->refer_id = null;
+                                    $user->partner()->save($partner);
+        
+                                    $bt = new UserBot();
+                                    $bt->bot_id = $bot->id;
+                                    $user->bots()->save($bt);
+                                }else{
+                                    $partner = new ClassicPartner();
+                                    $partner->bot_id = $bot->id;
+                                    $partner->refer_id = 1;
+                                    $user->partner()->save($partner);
+        
+                                    $bt = new UserBot();
+                                    $bt->bot_id = $bot->id;
+                                    $user->bots()->save($bt);
+        
+                                    $refer = User::find($nastavnik);
+                                    
+                                    Notice::create([
+                                        'bot_id' => $bot->id,
+                                        'user_id' => $nastavnik,
+                                        'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username.' id '.$user->id,
+                                        'send' => 0,
+                                        
+                                    ]);
+                                }
+        
                             }
                         }else{
-                            if($user->id == 1){
-                                $partner = new ClassicPartner();
-                                $partner->bot_id = $bot->id;
-                                $partner->refer_id = null;
-                                $user->partner()->save($partner);
+                            $nastavnik = 1;
+                            $usNast = UserBot::where([['user_id', $nastavnik],['bot_id', $bot->id]])->first();
+                            if($usNast){
+                                $partnerka = ClassicPartner::where([['bot_id', $bot->id],['user_id',$user->id]])->first();
+                                if(!$partnerka){
+                                    $partner = new ClassicPartner();
+                                    $partner->bot_id = $bot->id;
+                                    $partner->refer_id = $nastavnik;
+                                    $user->partner()->save($partner);
+                                    
+                                    $bt = new UserBot();
+                                    $bt->bot_id = $bot->id;
+                                    $user->bots()->save($bt);
     
-                                $bt = new UserBot();
-                                $bt->bot_id = $bot->id;
-                                $user->bots()->save($bt);
+                                    $refer = User::find($nastavnik);
+    
+                                    Notice::create([
+                                        'bot_id' => $bot->id,
+                                        'user_id' => $nastavnik,
+                                        'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username.' id '.$user->id,
+                                        'send' => 0,
+                                        
+                                    ]);
+                                }
                             }else{
-                                $partner = new ClassicPartner();
-                                $partner->bot_id = $bot->id;
-                                $partner->refer_id = 1;
-                                $user->partner()->save($partner);
+                                if($user->id == 1){
+                                    $partner = new ClassicPartner();
+                                    $partner->bot_id = $bot->id;
+                                    $partner->refer_id = null;
+                                    $user->partner()->save($partner);
     
-                                $bt = new UserBot();
-                                $bt->bot_id = $bot->id;
-                                $user->bots()->save($bt);
+                                    $bt = new UserBot();
+                                    $bt->bot_id = $bot->id;
+                                    $user->bots()->save($bt);
+                                }else{
+                                    $partner = new ClassicPartner();
+                                    $partner->bot_id = $bot->id;
+                                    $partner->refer_id = 1;
+                                    $user->partner()->save($partner);
     
-                                $refer = User::find($nastavnik);
-                                
-                                Notice::create([
-                                    'bot_id' => $bot->id,
-                                    'user_id' => $nastavnik,
-                                    'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username.' id '.$user->id,
-                                    'send' => 0,
-                                    
-                                ]);
-                            }
+                                    $bt = new UserBot();
+                                    $bt->bot_id = $bot->id;
+                                    $user->bots()->save($bt);
     
-                        }
-                    }else{
-                        $nastavnik = 1;
-                        $usNast = UserBot::where([['user_id', $nastavnik],['bot_id', $bot->id]])->first();
-                        if($usNast){
-                            $partnerka = ClassicPartner::where([['bot_id', $bot->id],['user_id',$user->id]])->first();
-                            if(!$partnerka){
-                                $partner = new ClassicPartner();
-                                $partner->bot_id = $bot->id;
-                                $partner->refer_id = $nastavnik;
-                                $user->partner()->save($partner);
-                                
-                                $bt = new UserBot();
-                                $bt->bot_id = $bot->id;
-                                $user->bots()->save($bt);
-
-                                $refer = User::find($nastavnik);
-
-                                Notice::create([
-                                    'bot_id' => $bot->id,
-                                    'user_id' => $nastavnik,
-                                    'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username.' id '.$user->id,
-                                    'send' => 0,
+                                    $refer = User::find($nastavnik);
                                     
-                                ]);
+                                    Notice::create([
+                                        'bot_id' => $bot->id,
+                                        'user_id' => $nastavnik,
+                                        'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username.' id '.$user->id,
+                                        'send' => 0,
+                                        
+                                    ]);
+                                }
+    
                             }
-                        }else{
-                            if($user->id == 1){
-                                $partner = new ClassicPartner();
-                                $partner->bot_id = $bot->id;
-                                $partner->refer_id = null;
-                                $user->partner()->save($partner);
-
-                                $bt = new UserBot();
-                                $bt->bot_id = $bot->id;
-                                $user->bots()->save($bt);
-                            }else{
-                                $partner = new ClassicPartner();
-                                $partner->bot_id = $bot->id;
-                                $partner->refer_id = 1;
-                                $user->partner()->save($partner);
-
-                                $bt = new UserBot();
-                                $bt->bot_id = $bot->id;
-                                $user->bots()->save($bt);
-
-                                $refer = User::find($nastavnik);
-                                
-                                Notice::create([
-                                    'bot_id' => $bot->id,
-                                    'user_id' => $nastavnik,
-                                    'text' => 'По вашей реф ссылке зарегистрировался новый пользователь. @'.$user->username.' id '.$user->id,
-                                    'send' => 0,
-                                    
-                                ]);
-                            }
-
                         }
                     }
-                    
-                    
+
                 }
             }
         }
