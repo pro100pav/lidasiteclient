@@ -291,12 +291,15 @@ class BotsController extends Controller
             $mc->message_user = $message;
             $usBot->chat->messages()->save($mc);
         }else{
-            $chat = ChatUser::create([
-                'user_bot_id'=>$user->id,
-            ]);
-            $mc = new ChatUserMessage();
-            $mc->message_user = $message;
-            $chat->messages()->save($mc);
+            if($user){
+                $chat = ChatUser::create([
+                    'user_bot_id'=>$user->id,
+                ]);
+                $mc = new ChatUserMessage();
+                $mc->message_user = $message;
+                $chat->messages()->save($mc);
+            }
+            
         }
         if($user->isstepBot($bot->id) > 1){
             return;
