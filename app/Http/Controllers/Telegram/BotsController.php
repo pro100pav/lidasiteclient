@@ -49,7 +49,7 @@ class BotsController extends Controller
 
                         $userad = UserSave::isadmin($result, $bot);
                         $user = UserSave::index($result, $bot,$temp);
-                        Log::info(json_encode(12, JSON_UNESCAPED_UNICODE));
+                        
                         if($user == 'spam'){
                             try {
                                 $response = $telegram->sendMessage([
@@ -124,6 +124,7 @@ class BotsController extends Controller
                                 }
                                 
                             }else{
+                                Log::info(json_encode(12, JSON_UNESCAPED_UNICODE));
                                 $this->chatMenegment($telegram, $user, $result, $chat_id, $message, $temp, $bot, true);
                             }
                             
