@@ -144,6 +144,7 @@ class UserSave{
             
             
         }elseif(isset($result["message"])){
+            
             if (isset($result["message"]["text"])){
                 if(strstr($result["message"]["text"], '/start')){
                     if(!$user->bots->where('bot_id', $bot->id)->first()){
@@ -268,6 +269,39 @@ class UserSave{
                     }
 
                 }
+            }
+        }else{
+            if (isset($result["message"])){
+                if(isset($result["message"]["from"]["username"])){
+                    $user->username = $result["message"]["from"]["username"];
+                    $user->save();
+                }
+                $name = '';
+                if(isset($result["message"]["from"]["first_name"])){
+                    $name = $result["message"]["from"]["first_name"];
+                }
+                if(isset($result["message"]["from"]["last_name"])){
+                    $name .= " ".$result["message"]["from"]["last_name"];
+                }
+                $user->name = $name;
+                $user->save();
+            }
+
+
+            if (isset($result["callback_query"])){
+                if(isset($result["callback_query"]["from"]["username"])){
+                    $user->username = $result["callback_query"]["from"]["username"];
+                    $user->save();
+                }
+                $name = '';
+                if(isset($result["callback_query"]["from"]["first_name"])){
+                    $name = $result["callback_query"]["from"]["first_name"];
+                }
+                if(isset($result["callback_query"]["from"]["last_name"])){
+                    $name .= " ".$result["callback_query"]["from"]["last_name"];
+                }
+                $user->name = $name;
+                $user->save();
             }
         }
 
