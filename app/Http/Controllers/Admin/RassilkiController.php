@@ -48,7 +48,7 @@ class RassilkiController extends Controller
         return redirect()->back();
     }
     public function createTest(Request $request){
-
+        $date = Carbon::now();
         AddsPost::create([
             'bot_id' => $request->bot,
             'content' => 'Начало рассылки. Создана: '.$date,
