@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Models\UpdateSistem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Controller;
@@ -9,14 +10,14 @@ class UpdateController extends Controller
 {
     public function update(Request $request)
     {
-        try {
-            // Проверка авторизации (опционально, если требуется)
-            // Вызов Artisan команды для обновления
-            $result = Artisan::call('git:pull'); // Или имя вашей команды
-            dd($result);
-            return response()->json(['message' => 'Обновление запущено!']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $newupd = UpdateSistem::where('new_update', 1)->first();
+        $newupd->new_update = 2;
+        $newupd->save();
+    }
+    public function updateGet(Request $request)
+    {
+        $newupd = UpdateSistem::where('new_update', 1)->first();
+        $updates = UpdateSistem::where('new_update', 1)->orderBy('created_at', 'desc')->get();
+        return view('admin.update', compact('newupd','updates'));
     }
 }

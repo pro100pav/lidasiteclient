@@ -43,6 +43,20 @@ class RassilkiController extends Controller
             'button' => $request->button,
             'send' => 0,
             'status' => 2,
+            'type' => 1,
+        ]);
+        return redirect()->back();
+    }
+    public function createTest(Request $request){
+
+        AddsPost::create([
+            'bot_id' => $request->bot,
+            'content' => 'Начало рассылки. Создана: '.$date,
+            'attachment' => null,
+            'button' => null,
+            'send' => 0,
+            'status' => 2,
+            'type' => 2,
         ]);
         return redirect()->back();
     }

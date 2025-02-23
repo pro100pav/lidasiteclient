@@ -22,6 +22,7 @@ class AddsPost extends Model
         'status',
         'message_ids',
         'sendstart_at',
+        'type',
     ];
     /*
         статусы:

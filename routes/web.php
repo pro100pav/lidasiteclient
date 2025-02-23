@@ -26,6 +26,7 @@ Route::middleware(['auth','redirect.if'])->group(function () {
 Route::middleware(['auth','admin','redirect.if'])->name('admin.')->prefix('manager')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('index');
     Route::post('/active', [App\Http\Controllers\Admin\AdminController::class, 'active'])->name('active');
+    Route::get('/update', [App\Http\Controllers\Admin\UpdateController::class, 'updateGet'])->name('updateGet');
     Route::post('/update', [App\Http\Controllers\Admin\UpdateController::class, 'update'])->name('update');
     Route::prefix('users')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('user.index');
@@ -80,6 +81,7 @@ Route::middleware(['auth','admin','redirect.if'])->name('admin.')->prefix('manag
     Route::prefix('rassilki')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\RassilkiController::class, 'index'])->name('rassilka.index');
         Route::post('/create', [App\Http\Controllers\Admin\RassilkiController::class, 'create'])->name('rassilka.create');
+        Route::post('/createTest', [App\Http\Controllers\Admin\RassilkiController::class, 'createTest'])->name('rassilka.createTest');
     });
     Route::prefix('sendTelegramCustom')->group(function () {
         Route::post('/sendmessageuser/{id}', [App\Http\Controllers\Admin\UserController::class, 'sendMessage'])->name('sendmessage.userTelega');

@@ -134,4 +134,27 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Тестовая рассылка на свой аккаунт</h3>
+            </div>
+            <div class="card-body" style="display: block;">
+                <form action="{{route('admin.rassilka.createTest')}}" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <label for="type">В каком боте рассылаем</label>
+                        <select id="type" name="bot" class="form-control custom-select">
+                            @foreach ($bots as $bot)
+                                <option value="{{$bot->id}}">{{$bot->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button class="btn btn-success">Создать</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

@@ -22,43 +22,44 @@ class UpdateSite extends Command
             'git pull origin master',
         ];
 
-        foreach ($commands as $command) {
-            echo "Выполняю: $command\n";
-            $output = [];
-            $return_var = 0;
-            exec($command, $output, $return_var);
+        // foreach ($commands as $command) {
+        //     echo "Выполняю: $command\n";
+        //     $output = [];
+        //     $return_var = 0;
+        //     exec($command, $output, $return_var);
         
-            if ($return_var === 0) {
-                echo "Успех\n";
-            } else {
-                echo "Ошибка (код $return_var):\n" . implode("\n", $output) . "\n";
-            }
-            Log::info(json_encode('upd', JSON_UNESCAPED_UNICODE));
-        }
-        Artisan::call('migrate');
-        // $updateS = UpdateSistem::where('type', 0)->first();
-        // if($updateS){
-        //     $commands = [
-        //         'git pull origin master',
-        //     ];
-    
-        //     foreach ($commands as $command) {
-        //         echo "Выполняю: $command\n";
-        //         $output = [];
-        //         $return_var = 0;
-        //         exec($command, $output, $return_var);
-            
-        //         if ($return_var === 0) {
-        //             echo "Успех\n";
-        //         } else {
-        //             echo "Ошибка (код $return_var):\n" . implode("\n", $output) . "\n";
-        //         }
-        //         Log::info(json_encode('upd', JSON_UNESCAPED_UNICODE));
+        //     if ($return_var === 0) {
+        //         echo "Успех\n";
+        //     } else {
+        //         echo "Ошибка (код $return_var):\n" . implode("\n", $output) . "\n";
         //     }
-        //     $updateS->type = 1;
-        //     $updateS->save();
-            
+        //     Log::info(json_encode('upd', JSON_UNESCAPED_UNICODE));
         // }
+        // Artisan::call('migrate');
+        $updateS = UpdateSistem::where('new_update', 2)->first();
+        if($updateS){
+            $commands = [
+                'git pull origin master',
+            ];
+    
+            foreach ($commands as $command) {
+                echo "Выполняю: $command\n";
+                $output = [];
+                $return_var = 0;
+                exec($command, $output, $return_var);
+            
+                if ($return_var === 0) {
+                    echo "Успех\n";
+                } else {
+                    echo "Ошибка (код $return_var):\n" . implode("\n", $output) . "\n";
+                }
+                Log::info(json_encode('upd', JSON_UNESCAPED_UNICODE));
+            }
+            Artisan::call('migrate');
+            $updateS->new_update = 3;
+            $updateS->save();
+            
+        }
         return;
     }
 

@@ -20,6 +20,12 @@
                 </ul>
             </li>
             <li>
+                <a class="has-arrow ai-icon" href="{{route('admin.updateGet')}}" aria-expanded="false">
+                    <i class="flaticon-086-star"></i>
+                    <span class="nav-text">Обновления</span>
+                </a>
+            </li>  
+            <li>
                 <a class="has-arrow ai-icon" href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();" aria-expanded="false">
                     <i class="flaticon-025-dashboard"></i>
                     <span class="nav-text">Выход</span>
