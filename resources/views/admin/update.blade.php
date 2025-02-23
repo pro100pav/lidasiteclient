@@ -16,7 +16,11 @@
                 <div>
                     @if ($newupd)
                         <span class="text-white fs-18">Новое обновление!</span>
-                        <a href="{{route('admin.update')}}" class="btn light btn-warning btn-sm">Обновить</a>
+                        <form action="{{route('admin.update')}}" method="post">
+                            @csrf
+                            <button class="btn light btn-warning btn-sm">Обновить</button>
+                        </form>
+
                     @else
                         <span class="text-white fs-18">Новых обновлений нет!</span>
                     @endif
