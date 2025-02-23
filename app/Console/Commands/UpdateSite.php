@@ -35,7 +35,7 @@ class UpdateSite extends Command
             }
             Log::info(json_encode('upd', JSON_UNESCAPED_UNICODE));
         }
-
+        Artisan::call('migrate');
         // $updateS = UpdateSistem::where('type', 0)->first();
         // if($updateS){
         //     $commands = [

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Auth;
 use App\Models\User;
+use App\Models\UpdateSistem;
 use App\Models\Bot\Bot;
 use App\Models\AppActive;
 use App\Http\Controllers\Controller;
